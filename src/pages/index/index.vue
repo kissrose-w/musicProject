@@ -13,6 +13,9 @@
 		</swiper>
   </view>
   <NavSwiper :navSwiperInfo="navSwiper"></NavSwiper>
+  <uni-section class="line" title="推荐歌单" type="line"  ></uni-section>
+  <uni-section class="line" title="说唱 | 电子 | 摇滚 热门榜单" type="line"  ></uni-section>
+  <uni-section class="line" title="你的雷达歌单" type="line"  ></uni-section>
 </template>
 
 <script setup lang="ts">
@@ -50,6 +53,9 @@ homePage()
       border-radius: 20px;
     }
 	}
+  ::v-deep .uni-section-header__decoration{
+    background-color: #C84341 !important;
+  }
 	
 	
 </style>
