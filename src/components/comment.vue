@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Comment } from '@/services/type';
-
+import CommentList from './CommentList.vue';
 
 const props = defineProps<{
   commentList: Comment[];
@@ -18,27 +18,14 @@ console.log(props.commentList)
           热门评论
           <view class="border-bottom"></view>
         </view>
-        <view class="com-item" v-for="item in hotComments">
-          <view class="com-info">
-            <view class="avatar">
-              <image :src="item.user.avatarUrl"/>
-            </view>
-            <view class="con">
-              <view class="username">{{ item.user.nickname }}</view>
-              <view class="text">{{ item.content }}</view>
-            </view>
-          </view>
-          <svg t="1764818295007" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17718" width="14" height="14">
-            <path d="M534.826667 935.466667a47.36 47.36 0 0 1-66.986667-66.773334L835.413333 501.333333 467.84 133.973333a47.36 47.36 0 1 1 66.986667-66.773333l400.64 400.64a47.36 47.36 0 0 1 0 66.986667z" fill="#bbbbbb" p-id="17719"></path>
-          </svg>
-          <view class="border-bottom"></view>
-        </view>
+        <CommentList :list="hotComments"/>
       </view>
       <view class="new" v-if="commentList.length !== 0">
         <view class="tit">
           最新评论
           <view class="border-bottom"></view>
         </view>
+        <CommentList :list="commentList"/>
       </view>
       <view
         class="empty"
@@ -88,22 +75,6 @@ console.log(props.commentList)
     top: 50%;
     left: 10px;
     transform: translateY(-50%);
-  }
-}
-
-.com-item{
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  .avatar{
-    width: 52rpx;
-    height: 52rpx;
-    image{
-      width: 100%;
-      height: 100%;
-    }
   }
 }
 
