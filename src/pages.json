@@ -36,11 +36,6 @@
 			}
 		},
 		{
-			"path": "pages/player/player",
-			"style": {
-			}
-		},
-		 {
       "path": "pages/ranking/ranking", 
       "style": {
 				"navigationBarBackgroundColor":"#C20C0C",
@@ -53,14 +48,6 @@
       "style": {
 				"navigationBarBackgroundColor":"#C20C0C",
         "navigationBarTitleText": "歌单",
-				"navigationBarTextStyle":"white"
-      }
-    },
-		{
-      "path": "pages/mine/mine", 
-      "style": {
-				"navigationBarBackgroundColor":"#C20C0C",
-        "navigationBarTitleText": "mine",
 				"navigationBarTextStyle":"white"
       }
     },
