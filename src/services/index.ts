@@ -1,3 +1,4 @@
+
 import axios from "axios"
 import type { HotSearchResponse, SearchSuggestResponse, SearchListResponse, PLDetail } from './type'
 import request from "./request";
