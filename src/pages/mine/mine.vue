@@ -1,12 +1,22 @@
 <script lang="ts" setup>
 import { mineApi } from "../../services/index"
 import { ref } from "vue"
-const mineInfo = ref({})
+
+interface MineInfo {
+  id: number;
+  coverImgUrl: string;
+  name: string;
+  playCount: number;
+  subscribedCount: number;
+}
+
+const mineInfo = ref<MineInfo>()
 const getMine = async() => {
   try {
     const res = await mineApi()
     console.log(res.playlist[0])
     mineInfo.value = res.playlist[0]
+    console.log(mineInfo.value)
   } catch (error) {
     console.log(error)
   }
@@ -32,11 +42,11 @@ const toMyLike = (e:any) => {
       <view>听歌</view>
     </view>
   </view>
-  <view class="myLike" :data-id="mineInfo.id" @click="toMyLike">
-    <img :src="mineInfo.coverImgUrl" alt="">
+  <view class="myLike" :data-id="mineInfo?.id" @click="toMyLike">
+    <img :src="mineInfo?.coverImgUrl" alt="">
     <view class="likeInfo">
-      <text>{{ mineInfo.name }}</text>
-      <view class="count">{{mineInfo.playCount}}首·{{mineInfo.subscribedCount}}次播放</view>
+      <text>{{ mineInfo?.name }}</text>
+      <view class="count">{{mineInfo?.playCount}}首·{{mineInfo?.subscribedCount}}次播放</view>
     </view>
   </view>
 </template>
