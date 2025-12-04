@@ -20,6 +20,17 @@
 				"navigationBarBackgroundColor":"#C84341",
 				"navigationBarTextStyle": "white"
 			}
+		},
+		{
+			"path": "pages/playList/playList",
+			"style": {
+				"navigationBarTitleText": "歌单"
+			}
+		},
+		{
+			"path": "pages/player/player",
+			"style": {
+			}
 		}
 	],
 	"tabBar": {
@@ -38,9 +49,9 @@
     }]
   },
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "",
+		"navigationBarBackgroundColor": "#c84341",
 		"backgroundColor": "#F8F8F8"
 	}
 }
