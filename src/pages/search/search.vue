@@ -15,11 +15,21 @@ interface HotItem {
   url: string
   alg?: string
 }
+interface conItem {
+  alg?: string
+  feature?: string
+  keyword: string
+  lastKeyword?: string
+  type?: number
+}
 
 const isActive = ref<boolean>(false)
 const hotData = ref<HotItem[]>([])
 const resultInfo = ref<string | number>('')
+const resultCon = ref<conItem[]>([])
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
+// 热门搜索数据
 const getData = async () => {
   try {
     const res = await searchHotInfo()
@@ -30,17 +40,33 @@ const getData = async () => {
   }
 }
 getData()
+
+// 搜索内容数据
 const resultData = async () => {
   try {
     const res = await searchResultInfo({ keywords: resultInfo.value })
-    console.log(res)
+    console.log(res.data.result)
+    resultCon.value = res.data.result
   } catch(e) {
     console.log(e)
   }
 }
+
+// 取消搜索内容展示
+const resultShow = () => {
+  isActive.value = false
+  resultInfo.value = ''
+}
+
+// 搜索防抖
 watch(resultInfo, () => {
+  if(debounceTimer) {
+    clearTimeout(debounceTimer)
+  }
   if(resultInfo.value) {
-    resultData()
+    debounceTimer = setTimeout(() => {
+      resultData()
+    }, 500)
   }
 })
 
@@ -60,12 +86,12 @@ watch(resultInfo, () => {
     </view>
     <text
       v-if="isActive"
-      @click="isActive = false"
+      @click="resultShow"
     >
       <span>取消</span>
     </text>
   </view>
-  <searchResult v-if="isActive" />
+  <searchResult v-if="resultInfo && isActive" :resultCon="resultCon" />
   <searchHotList v-else-if="hotData.length" :hotData="hotData" />
 </template>
 
