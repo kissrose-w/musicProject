@@ -27,10 +27,24 @@ const props = defineProps(['navSwiperInfo'])
 const goDetail = (item:any,index:number) =>{
   console.log('点击了',index)
   const path = [
-    "pages/player/player",
+    "/pages/playList/playList",
+    "",
+    "",
+    "/pages/ranking/ranking"
   ]
+  if(path[index]==="" || index >= path.length){
+    uni.showToast({ title: '暂未开放', icon: 'none' });
+    return;
+  }
   uni.navigateTo({
-    url : path[index]
+    
+    url : path[index],
+    success:()=>{
+      console.log("成功了")
+    },
+    fail:(e) =>{
+      console.log(e)
+    }
   })
 }
 </script>
