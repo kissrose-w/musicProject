@@ -6,7 +6,7 @@
   >
     <SwiperSlide
     class="swiper-slide"
-    v-for="item in props.navSwiperInfo"
+    v-for="(item,index) in props.navSwiperInfo"
     :key="item.resourceId"
     >
       <view class="item">
@@ -21,8 +21,9 @@
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css/free-mode';
 import 'swiper/css';
-
 const props = defineProps(['navSwiperInfo'])
+
+
 </script>
 
 <style lang="scss" scoped>
