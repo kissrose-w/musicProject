@@ -1,7 +1,7 @@
 <template>
   <view class="content">
     <view class="list-ul">
-      <view class="item-li" v-for="item in props.recommendationInfo" :key="item.creativeId">
+      <view class="item-li" v-for="item in props.recommendationInfo" :key="item.creativeId" @click="goDetail(item.creativeId)">
         <image :src="item.uiElement.image.imageUrl" mode="widthFix"/>
         <view class="text">{{ item.uiElement.mainTitle.title }}</view>
       </view>
@@ -25,6 +25,12 @@ type RecomT ={
   }[]
 }
 const props = defineProps<RecomT>()
+const goDetail = (id:string) =>{
+  uni.navigateTo({
+    url: `/pages/player/player?id=${id}`
+  });
+  console.log(id)
+}
 </script>
 
 <style lang="scss" scoped>

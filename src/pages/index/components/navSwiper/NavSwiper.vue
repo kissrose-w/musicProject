@@ -8,6 +8,7 @@
     class="swiper-slide"
     v-for="(item,index) in props.navSwiperInfo"
     :key="item.resourceId"
+    @click="goDetail(item,index)"
     >
       <view class="item">
         <img :src="item.uiElement.image.imageUrl" >
@@ -23,7 +24,15 @@ import 'swiper/css/free-mode';
 import 'swiper/css';
 const props = defineProps(['navSwiperInfo'])
 
-
+const goDetail = (item:any,index:number) =>{
+  console.log('点击了',index)
+  const path = [
+    "pages/player/player",
+  ]
+  uni.navigateTo({
+    url : path[index]
+  })
+}
 </script>
 
 <style lang="scss" scoped>
