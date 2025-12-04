@@ -23,7 +23,7 @@ const emit = defineEmits<Emits>()
     <uni-icons type="trash" size="20" color="#ccc" />
   </view>
   <view class="hisName">
-    <text v-for="item in props.searchHis" :key="item" @click="emit('onHisItem', item)">{{ item }}</text>
+    <text v-for="(item, index) in props.searchHis" :key="item" @click="emit('onHisItem', item)">{{ item }}</text>
   </view>
 </template>
 

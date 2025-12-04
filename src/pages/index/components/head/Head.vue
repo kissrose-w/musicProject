@@ -17,16 +17,15 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+
 const showLeft = ref()
-const showDrawer=() =>{
-	showLeft.value.open();
+const showDrawer = () => {
+  showLeft.value.open();
 }
 
-const router = useRouter()
 const goSearch = () => {
-  router.push({
-    path: 'pages/search/search'
+  uni.navigateTo({
+    url: '/pages/search/search'
   })
 }
 
