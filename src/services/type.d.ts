@@ -40,6 +40,19 @@ export type User = {
   avatarImgId_str: string;
 };
 
+// 歌曲类型
+export type Song = {
+  id: number;
+  name: string;
+  ar: Ava[];
+}
+
+// 作者
+export type Ava = {
+  id: number;
+  name: string
+}
+
 // 歌单类型
 export type Playlist = {
   id: number;
@@ -80,6 +93,9 @@ export type Playlist = {
   relateResType: null;
   coverStatus: number;
   subscribers: User[];
+  shareCount: number;
+  commentCount: number;
+  tracks: Song[];
 };
 
 // 歌单详情类型
@@ -96,6 +112,17 @@ export type PLDetail = {
   urls?: null;
 }
 
+// 歌单创建者类型
 export type Creator = {
-  nickname: string
+  nickname: string;
+  avatarUrl: string
+}
+
+// 评论类型
+export type Comment = {
+  content: string;
+  user: User;
+  likedCount: number;
+  liked: bollean;
+  commentId: number
 }

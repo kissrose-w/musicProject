@@ -10,12 +10,18 @@
 		{
 			"path": "pages/playList/playList",
 			"style": {
+				"navigationBarTitleText": "歌单"
+			}
+		},
+		{
+			"path": "pages/player/player",
+			"style": {
 			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "歌单",
+		"navigationBarTitleText": "",
 		"navigationBarBackgroundColor": "#c84341",
 		"backgroundColor": "#F8F8F8"
 	}

@@ -2,7 +2,7 @@
 interface RequestParams {
   url: string,
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE',
-  id?: string
+  id?: number
 }
 
 
@@ -10,11 +10,11 @@ const request = <T = any>({
   url,
   id,
   method = 'GET'
-}: RequestParams) => {
+}: RequestParams): Promise<T> => {
 
   const endUrl = id ? `${url}?id=${id}` : url
 
-  return new Promise((resolve, reject) => {
+  return new Promise<T>((resolve, reject) => {
     uni.request({
       url: endUrl,
       method,
