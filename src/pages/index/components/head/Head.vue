@@ -10,18 +10,25 @@
     </uni-drawer>
     <view class="inp">
       <uni-icons type="search" size="20" color="gray"></uni-icons>
-      <input type="text" placeholder="搜索">
+      <input type="text" placeholder="搜索" @click="goSearch">
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 const showLeft = ref()
 const showDrawer=() =>{
 	showLeft.value.open();
 }
 
+const router = useRouter()
+const goSearch = () => {
+  router.push({
+    path: 'pages/search/search'
+  })
+}
 
 
 </script>

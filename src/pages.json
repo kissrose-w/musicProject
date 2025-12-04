@@ -20,6 +20,14 @@
 				"navigationBarBackgroundColor":"#C84341",
 				"navigationBarTextStyle": "white"
 			}
+		},
+		{
+			"path": "pages/search/search",
+			"style": {
+				"navigationBarTitleText": "搜索",
+				"navigationBarBackgroundColor": "#C84341",
+				"navigationBarTextStyle": "white"
+			}
 		}
 	],
 	"tabBar": {
