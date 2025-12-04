@@ -1,23 +1,18 @@
 
 <script setup lang='ts'>
+import type { HotItem } from '../../../services/type'
 
-interface HotItem {
-  searchWord: string
-  score: number
-  iconType: number
-  source: number
-  iconUrl?: string
-  content: string
-  url: string
-  alg?: string
-}
 
 interface Props {
   hotData: HotItem[] | null
 }
 
+interface Emits {
+  onHisItem: [name: string]
+}
+
+const emit = defineEmits<Emits>()
 const props = defineProps<Props>()
-console.log(props.hotData)
 
 </script>
 
@@ -31,6 +26,7 @@ console.log(props.hotData)
       class="hotName"
       v-for="(item, index) in props.hotData" 
       :key="item.searchWord"
+      @click="emit('onHisItem', item.searchWord)"
     >
     <text>{{ index + 1 }}</text>
     <span>{{ item.searchWord }}</span>
