@@ -27,7 +27,7 @@ const props = defineProps<RadarPlaylist>()
 
 const goDetail = (id:string) =>{
   uni.navigateTo({
-    url: `/pages/player/player?id=${id}`
+    url: `/pages/playList/playList?id=${id}`
   });
   console.log(id)
 }
