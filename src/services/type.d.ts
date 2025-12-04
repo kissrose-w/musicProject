@@ -178,3 +178,7 @@ export type Comment = {
   liked: boolean;
   commentId: number
 }
+export type officialChart = {
+  code:number,
+  list:[]
+}
