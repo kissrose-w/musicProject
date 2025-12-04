@@ -1,7 +1,6 @@
 import request from "./request"
 import type { officialChart } from "./type"
 
-// 'https://music.zyxcl.xyz/toplist/detail'
 
 export const officialChartApi = () => {
     return request<officialChart>({
@@ -9,14 +8,20 @@ export const officialChartApi = () => {
     })
 }
 
-export const recommend =()=>{
-  return request({
-    url:"https://music.zyxcl.xyz/homepage/block/page"
-  })
-}
-
 export const mineApi = ()=>{
   return request({
     url:"https://music.zyxcl.xyz/user/playlist?uid=9862787213"
+  })
+}
+
+export const radioApi = () =>{
+  return request({
+    url:"https://music.zyxcl.xyz/playlist/detail?id=757439549"
+  })
+}
+
+export const radioUrlApi = () =>{
+  return request({
+    url:"https://music.zyxcl.xyz/song/url?id=515453363"
   })
 }
