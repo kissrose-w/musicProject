@@ -1,11 +1,20 @@
+<<<<<<< HEAD
 import { request } from "./request1";
 import axios from "axios"
 import type { HotSearchResponse, SearchSuggestResponse, SearchListResponse } from './type'
+=======
+import request from "./request";
+import type {
+  PLDetail
+} from './type'
+
+>>>>>>> 282c0bd2f9b77057b3c8e9116800af0cf09d14b7
 
 //主页接口
 export const homepageApi = () =>{
   return request({
     url:"https://music.zyxcl.xyz/homepage/block/page"
+<<<<<<< HEAD
   })}
 
 // 搜索接口
@@ -28,3 +37,26 @@ export const searchResultInfo = ({keywords}: searchParams) => {
 export const searchListInfo = ({keywords}: searchParams) => {
   return instance.get<SearchListResponse>(`/search`, { params: { keywords } })
 } 
+=======
+  })
+}
+
+
+
+
+// 获取歌单详情
+export const getPLDetailApi = (id: number) => {
+  return request<PLDetail>({
+    url: 'https://music.zyxcl.xyz/playlist/detail',
+    id
+  })
+}
+
+// 获取歌单评论详情
+export const getCommentApi = (id: number) => {
+  return request({
+    url: 'https://music.zyxcl.xyz/comment/playlist',
+    id
+  })
+}
+>>>>>>> 282c0bd2f9b77057b3c8e9116800af0cf09d14b7
