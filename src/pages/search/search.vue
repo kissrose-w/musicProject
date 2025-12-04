@@ -3,31 +3,28 @@
 import { ref, watch } from 'vue'
 import searchResult from './components/searchResult.vue'
 import searchHotList from './components/searchHotList.vue'
-import { searchHotInfo, searchResultInfo } from '../../services'
+import searchHistory from './components/searchHistory.vue'
+import searchList from './components/searchList.vue'
+import { searchHotInfo, searchListInfo, searchResultInfo } from '../../services'
+import type { HotItem, conItem, song } from '../../services/type'
 
-interface HotItem {
-  searchWord: string
-  score: number
-  iconType: number
-  source: number
-  iconUrl?: string
-  content: string
-  url: string
-  alg?: string
-}
-interface conItem {
-  alg?: string
-  feature?: string
-  keyword: string
-  lastKeyword?: string
-  type?: number
-}
 
 const isActive = ref<boolean>(false)
 const hotData = ref<HotItem[]>([])
-const resultInfo = ref<string | number>('')
+const resultInfo = ref<string>('')
 const resultCon = ref<conItem[]>([])
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
+const searchListData = ref<song[]>([])
+const searchHis = ref<string[]>([])
+const showList = ref<boolean>(false)
+
+document.addEventListener('keydown', e => {
+  if(e.keyCode === 13 && resultInfo) {
+    searchListData.value = []
+    getListData()
+    showList.value = true
+  }
+})
 
 // 热门搜索数据
 const getData = async () => {
@@ -41,12 +38,25 @@ const getData = async () => {
 }
 getData()
 
+// 搜索列表
+const getListData = async () => {
+  try {
+    if(!searchHis.value.includes(resultInfo.value)){
+      searchHis.value.push(resultInfo.value)
+    }
+    const res = await searchListInfo({ keywords: resultInfo.value })
+    searchListData.value = res.data.result.songs
+  } catch(e) {
+    console.log(e)
+  }
+}
+
 // 搜索内容数据
 const resultData = async () => {
   try {
+    console.log('触发搜索建议')
     const res = await searchResultInfo({ keywords: resultInfo.value })
-    console.log(res.data.result)
-    resultCon.value = res.data.result
+    resultCon.value = res.data.result.allMatch
   } catch(e) {
     console.log(e)
   }
@@ -56,6 +66,9 @@ const resultData = async () => {
 const resultShow = () => {
   isActive.value = false
   resultInfo.value = ''
+  resultCon.value = []
+  showList.value = false
+  searchListData.value = []
 }
 
 // 搜索防抖
@@ -70,6 +83,14 @@ watch(resultInfo, () => {
   }
 })
 
+// 点击搜索历史，展示搜索列表
+const onHisItem = (name:string) => {
+  showList.value = true
+  resultInfo.value = name
+  isActive.value = true
+  getListData()
+}
+
 </script>
 
 <template>
@@ -81,18 +102,24 @@ watch(resultInfo, () => {
         placeholder="请输入要搜索的歌曲/歌手"
         :class="{active: isActive}"
         @focus="isActive = true"
-        v-model="resultInfo"
+        v-model.trim="resultInfo"
       >
+      <!-- <uni-icons type="search" size="24" color="#ff0000" /> -->
     </view>
     <text
+      class="del"
       v-if="isActive"
       @click="resultShow"
     >
-      <span>取消</span>
+      取消
     </text>
   </view>
-  <searchResult v-if="resultInfo && isActive" :resultCon="resultCon" />
-  <searchHotList v-else-if="hotData.length" :hotData="hotData" />
+  <searchList v-if="showList" :searchListData="searchListData" />
+  <searchResult v-if="resultInfo && !showList" :resultCon="resultCon" />
+  <view v-else-if="hotData.length && !showList">
+    <searchHistory v-if="searchHis.length > 0" :searchHis="searchHis" @onHisItem="onHisItem" />
+    <searchHotList :hotData="hotData" @onHisItem="onHisItem" />
+  </view>
 </template>
 
 <style lang='scss' scoped>
@@ -105,35 +132,45 @@ watch(resultInfo, () => {
     flex: 1;
     height: 100%;
     display: flex;
+    align-items: center;
     border-radius: 5px;
     overflow: hidden;
   }
   .search-icon{
     width: 34px;
+    height: 100%;
     background: #f8f8f8;
     border: none;
   }
+  input{
+    flex: 1;
+    height: 100%;
+    border: none;
+    background: #f8f8f8;
+    color: black;
+    padding: 8px;
+    position: relative;
+  }
+  uni-icons{
+    width: 24px;
+    height: 24px;
+    // padding: 0 8px;
+    flex-shrink: 0;
+    position: absolute;
+    z-index: 10;
+    right: 60px;
+  }
 }
-input{
-  flex: 1;
-  height: 100%;
-  border: none;
-  background: #f8f8f8;
-  color: black;
-  padding: 8px;
-}
+
 .input-placeholder{
   color: #b3b3b3;
   font-size: 14px; /* 字体大小 */
 }
-text{
+.del{
   width: 38px;
   text-align: right;
-  span{
-    font-size: 14px;
-    line-height: 36px;
-    color: #333;
-    cursor: pointer
-  }
+  line-height: 36px;
+  font-size: 14px;
+  color: #333;
 }
 </style>
