@@ -1,6 +1,6 @@
 
 <script setup lang='ts'>
-import { nextTick, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import searchResult from './components/searchResult.vue'
 import searchHotList from './components/searchHotList.vue'
 import searchHistory from './components/searchHistory.vue'
