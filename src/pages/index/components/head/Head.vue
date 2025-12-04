@@ -5,7 +5,7 @@
     </view>
     <uni-drawer ref="showLeft" mode="left" :mask-click="true" >
       <scroll-view style="height: 100%;" scroll-y="true">
-        <view v-for="item in 60" :key="item">可滚动内容 {{ item }}</view>
+        内容
       </scroll-view>
     </uni-drawer>
     <view class="inp">
