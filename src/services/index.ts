@@ -1,6 +1,6 @@
 
 import axios from "axios"
-import type { HotSearchResponse, SearchSuggestResponse, SearchListResponse, PLDetail } from './type'
+import type { HotSearchResponse, SearchSuggestResponse, SearchListResponse, PLDetail, officialChart } from './type'
 import request from "./request";
 
 
@@ -47,5 +47,31 @@ export const getCommentApi = (id: number) => {
   return request({
     url: 'https://music.zyxcl.xyz/comment/playlist',
     id
+  })
+}
+
+
+
+export const officialChartApi = () => {
+    return request<officialChart>({
+      url:"https://music.zyxcl.xyz/toplist/detail"
+    })
+}
+
+export const mineApi = ()=>{
+  return request({
+    url:"https://music.zyxcl.xyz/user/playlist?uid=9862787213"
+  })
+}
+
+export const radioApi = () =>{
+  return request({
+    url:"https://music.zyxcl.xyz/playlist/detail?id=757439549"
+  })
+}
+
+export const radioUrlApi = () =>{
+  return request({
+    url:"https://music.zyxcl.xyz/song/url?id=515453363"
   })
 }

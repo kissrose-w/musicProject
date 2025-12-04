@@ -36,10 +36,29 @@
 			}
 		},
 		{
-			"path": "pages/player/player",
-			"style": {
-			}
-		}
+      "path": "pages/ranking/ranking", 
+      "style": {
+				"navigationBarBackgroundColor":"#C20C0C",
+        "navigationBarTitleText": "排行榜",
+				"navigationBarTextStyle":"white"
+      }
+    },
+		{
+      "path": "pages/player/player", 
+      "style": {
+				"navigationBarBackgroundColor":"#C20C0C",
+        "navigationBarTitleText": "歌单",
+				"navigationBarTextStyle":"white"
+      }
+    },
+		{
+      "path": "pages/radio/radio", 
+      "style": {
+				"navigationBarBackgroundColor":"#C20C0C",
+        "navigationBarTitleText": "radio",
+				"navigationBarTextStyle":"white"
+      }
+    }
 	],
 	"tabBar": {
 		"selectedColor":"rgb(200, 67, 65)",

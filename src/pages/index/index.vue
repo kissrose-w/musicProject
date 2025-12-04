@@ -64,9 +64,10 @@ homePage()
 <style lang="scss" scoped>
 	.swipers {
     padding: 30rpx;
-    height: 268rpx;
+    height: 328rpx;
     image{
       width: 690rpx;
+      height: 100%;
       border-radius: 20px;
     }
 	}
