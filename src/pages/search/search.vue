@@ -7,6 +7,7 @@ import searchHistory from './components/searchHistory.vue'
 import searchList from './components/searchList.vue'
 import { searchHotInfo, searchListInfo, searchResultInfo } from '../../services'
 import type { HotItem, conItem, song } from '../../services/type'
+import { useRouter } from 'vue-router'
 
 
 const isActive = ref<boolean>(false)
@@ -17,6 +18,7 @@ let debounceTimer: ReturnType<typeof setTimeout> | null = null
 const searchListData = ref<song[]>([])
 const searchHis = ref<string[]>([])
 const showList = ref<boolean>(false)
+const router = useRouter()
 
 document.addEventListener('keydown', e => {
   if(e.keyCode === 13 && resultInfo) {
@@ -25,6 +27,13 @@ document.addEventListener('keydown', e => {
     showList.value = true
   }
 })
+
+// 跳转播放器
+const goPlay = () => {
+  router.push({
+    path: '../palyer/player.vue'
+  })
+}
 
 // 热门搜索数据
 const getData = async () => {
@@ -125,7 +134,7 @@ const onHisItem = (name:string) => {
       取消
     </text>
   </view>
-  <searchList v-if="showList" :searchListData="searchListData" />
+  <searchList v-if="showList" :searchListData="searchListData" @goPlay="goPlay" />
   <searchResult v-if="resultInfo && !showList" :resultCon="resultCon" />
   <view v-else-if="hotData.length && !showList">
     <searchHistory v-if="searchHis && searchHis.length > 0" :searchHis="searchHis" @onHisItem="onHisItem" />
