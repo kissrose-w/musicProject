@@ -4,6 +4,7 @@ import { ref } from 'vue';
 import type { PLDetail, Playlist, User } from '@/services/type';
 import SongList from './components/songList.vue';
 import Comment from '@/components/comment.vue';
+import { onLoad } from '@dcloudio/uni-app';
 
 
 const playList = ref<Playlist | null>(null);
@@ -12,9 +13,23 @@ const commentList = ref([]);
 const hotComments = ref([]);
 
 
-const getPLDetail = async () => {
+const curId = ref<number>()
+interface Params {
+  // id: number
+  id?: number
+}
+
+onLoad(async (query?: Params) => {
+  console.log(query?.id); //打印出上个页面传递的参数。
+  curId.value = query?.id!
+  
+  getPLDetail(curId.value);
+})
+
+const getPLDetail = async (id: number) => {
   try {
-    const res = await getPLDetailApi(362391732);
+    console.log(curId.value)
+    const res = await getPLDetailApi(id);
     console.log(res);
     playList.value = res.playlist;
   } catch (e) {
@@ -22,7 +37,6 @@ const getPLDetail = async () => {
   }
 }
 
-getPLDetail();
 
 const getCommentList = async (id: number) => {
   try {
