@@ -62,6 +62,11 @@ const resultData = async () => {
   }
 }
 
+const clearResult = () => {
+  console.log('clearResult')
+  resultInfo.value = ''
+}
+
 // 取消搜索内容展示
 const resultShow = () => {
   isActive.value = false
@@ -96,7 +101,9 @@ const onHisItem = (name:string) => {
 <template>
   <view class="search">
     <view class="inp">
-      <view class="search-icon"></view>
+      <view class="search-icon">
+        <uni-icons type="search" size="20" color="#ccc" @click="clearResult" />
+      </view>
       <input 
         type="text"
         placeholder="请输入要搜索的歌曲/歌手"
@@ -104,7 +111,7 @@ const onHisItem = (name:string) => {
         @focus="isActive = true"
         v-model.trim="resultInfo"
       >
-      <!-- <uni-icons type="search" size="24" color="#ff0000" /> -->
+      <uni-icons v-if="resultInfo" class="icon" type="clear" size="25" color="#ccc" />
     </view>
     <text
       class="del"
@@ -141,6 +148,9 @@ const onHisItem = (name:string) => {
     height: 100%;
     background: #f8f8f8;
     border: none;
+    line-height: 36px;
+    text-align: center;
+    z-index: 10;
   }
   input{
     flex: 1;
@@ -151,13 +161,12 @@ const onHisItem = (name:string) => {
     padding: 8px;
     position: relative;
   }
-  uni-icons{
+  .icon{
     width: 24px;
     height: 24px;
     // padding: 0 8px;
     flex-shrink: 0;
     position: absolute;
-    z-index: 10;
     right: 60px;
   }
 }
