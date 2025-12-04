@@ -22,13 +22,14 @@
 			}
 		},
 		{
-<<<<<<< HEAD
 			"path": "pages/search/search",
 			"style": {
 				"navigationBarTitleText": "搜索",
 				"navigationBarBackgroundColor": "#C84341",
 				"navigationBarTextStyle": "white"
-=======
+			}
+		},
+		{
 			"path": "pages/playList/playList",
 			"style": {
 				"navigationBarTitleText": "歌单"
@@ -37,7 +38,6 @@
 		{
 			"path": "pages/player/player",
 			"style": {
->>>>>>> 282c0bd2f9b77057b3c8e9116800af0cf09d14b7
 			}
 		}
 	],

@@ -1,20 +1,13 @@
-<<<<<<< HEAD
-import { request } from "./request1";
-import axios from "axios"
-import type { HotSearchResponse, SearchSuggestResponse, SearchListResponse } from './type'
-=======
-import request from "./request";
-import type {
-  PLDetail
-} from './type'
 
->>>>>>> 282c0bd2f9b77057b3c8e9116800af0cf09d14b7
+import axios from "axios"
+import type { HotSearchResponse, SearchSuggestResponse, SearchListResponse, PLDetail } from './type'
+import request from "./request";
+
 
 //主页接口
 export const homepageApi = () =>{
   return request({
     url:"https://music.zyxcl.xyz/homepage/block/page"
-<<<<<<< HEAD
   })}
 
 // 搜索接口
@@ -37,10 +30,6 @@ export const searchResultInfo = ({keywords}: searchParams) => {
 export const searchListInfo = ({keywords}: searchParams) => {
   return instance.get<SearchListResponse>(`/search`, { params: { keywords } })
 } 
-=======
-  })
-}
-
 
 
 
@@ -59,4 +48,3 @@ export const getCommentApi = (id: number) => {
     id
   })
 }
->>>>>>> 282c0bd2f9b77057b3c8e9116800af0cf09d14b7
