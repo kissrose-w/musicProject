@@ -21,6 +21,22 @@
         "navigationBarTitleText": "歌单",
 				"navigationBarTextStyle":"white"
       }
+    },
+		{
+      "path": "pages/test/test", 
+      "style": {
+				"navigationBarBackgroundColor":"#C20C0C",
+        "navigationBarTitleText": "test",
+				"navigationBarTextStyle":"white"
+      }
+    },
+		{
+      "path": "pages/mine/mine", 
+      "style": {
+				"navigationBarBackgroundColor":"#C20C0C",
+        "navigationBarTitleText": "mine",
+				"navigationBarTextStyle":"white"
+      }
     }
 	],
 	"globalStyle": {
