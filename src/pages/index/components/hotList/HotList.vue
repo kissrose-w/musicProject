@@ -54,8 +54,8 @@ const player = (id:any) =>{
     width: 640rpx;
     height: 100%;
     .swiper-li{
-      width: 640rpx;
-      height: 93rpx;
+      width: calc(640rpx + 40px);
+      height: calc(93rpx + 20px);
       display: flex;
       align-items: center;
       padding: 10px 15px;
