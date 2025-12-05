@@ -19,3 +19,12 @@ export default defineConfig({
     }
   }
 });
+
+
+
+
+			// https://zyxcl.github.io/MusicApp/static/icon/faxian.png
+			// https://zyxcl.github.io/MusicApp/static/icon/faxian_1.png
+
+			// https://zyxcl.github.io/MusicApp/static/icon/wode.png
+			// https://zyxcl.github.io/MusicApp/static/icon/wode_1.png
