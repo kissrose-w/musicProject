@@ -82,9 +82,26 @@ export const radioUrlApi = (id:number | string) =>{
   })
 }
 
+<<<<<<< HEAD
 // 获取音乐详情
 export const songDetailApi = (id: number | string) => {
   return request({
     url: `/api/song/detail?ids=${id}`
   })
 }
+=======
+//手机号登录
+export const telLoginApi = (phone:string ,password:string) => {
+  return request({
+    url:`/api/login/cellphone?phone=${phone}&password=${password}`,
+    method:'POST'
+  })
+}
+
+//获取cookie
+export const cookieApi = () => {
+  return request({
+    url:'/api//register/anonimous'
+  })
+}
+>>>>>>> master
