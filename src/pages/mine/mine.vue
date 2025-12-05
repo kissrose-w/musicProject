@@ -49,7 +49,6 @@ const toMyLike = (e:any) => {
       <view class="count">{{mineInfo?.playCount}}首·{{mineInfo?.subscribedCount}}次播放</view>
     </view>
   </view>
-  <!-- <button @click="gode">去登陆</button> -->
 </template>
 
 <style lang="scss" scoped>
