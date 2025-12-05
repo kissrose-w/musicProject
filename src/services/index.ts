@@ -39,7 +39,7 @@ export const searchListInfo = ({keywords, limit = 30}: searchParams) => {
 export const getPLDetailApi = (id?: number) => {
   let url = '';
   if(id) {
-    url = '/api/playlist/detail';
+    url = `/api/playlist/detail?id=${id}`;
   } else {
     url = '/api/recommend/songs'
   };
