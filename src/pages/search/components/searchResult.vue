@@ -1,20 +1,27 @@
 
 <script setup lang='ts'>
 import type { conItem } from '../../../services/type'
+import { computed } from 'vue'
+import type { PropType } from 'vue'
 
-interface Props {
-  resultCon: conItem[] | null
+const props = defineProps({
+  resultCon: { type: Array as PropType<conItem[]>, required: false }
+})
+interface Emits {
+  onHisItem: [name: string]
 }
 
-const props = defineProps<Props>()
-
+const emits = defineEmits<Emits>()
+const list = computed(() => (props.resultCon ?? []) as conItem[])
 
 </script>
 
 <template>
-<view class="con" v-for="item in props.resultCon" :key="item.keyword">
-  {{ item.keyword }}
-</view>
+  <template v-if="list.length">
+    <view class="con" v-for="item in list" :key="item.keyword" @click="emits('onHisItem', item.keyword)">
+      {{ item.keyword }}
+    </view>
+  </template>
 </template>
 
 <style lang='scss' scoped>

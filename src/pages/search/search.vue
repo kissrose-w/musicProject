@@ -14,6 +14,8 @@ const isActive = ref<boolean>(false)
 const hotData = ref<HotItem[]>([])
 const resultInfo = ref<string>('')
 const resultCon = ref<conItem[]>([])
+// 点击历史时抑制接下来的防抖建议触发
+const suppressSuggest = ref<boolean>(false)
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
 const searchListData = ref<song[]>([])
 const searchHis = ref<string[]>([])
@@ -35,11 +37,17 @@ const goPlay = () => {
   })
 }
 
+// 清空历史搜索
+const clearHis = () => {
+  localStorage.removeItem('name')
+  // 立即清空内存中的历史，避免保留旧数据并让子组件通过现有 v-if 隐藏
+  searchHis.value = []
+}
+
 // 热门搜索数据
 const getData = async () => {
   try {
     const res = await searchHotInfo()
-    console.log(res)
     hotData.value = res.data.data
     if(localStorage.getItem('name')){
       searchHis.value = (JSON.parse(localStorage.getItem('name')))
@@ -54,7 +62,7 @@ getData()
 const getListData = async () => {
   try {
     if(!searchHis.value?.includes(resultInfo.value)){
-      searchHis.value.push(resultInfo.value)
+      searchHis.value.unshift(resultInfo.value)
       localStorage.setItem('name', JSON.stringify(searchHis.value))
     }
     const res = await searchListInfo({ keywords: resultInfo.value })
@@ -69,12 +77,13 @@ const resultData = async () => {
   try {
     console.log('触发搜索建议')
     const res = await searchResultInfo({ keywords: resultInfo.value })
-    resultCon.value = res.data.result.allMatch
+    resultCon.value = res.data.result?.allMatch ?? []
   } catch(e) {
     console.log(e)
   }
 }
 
+// 清空输入框里的值
 const clearResult = () => {
   console.log('clearResult')
   resultInfo.value = ''
@@ -91,12 +100,20 @@ const resultShow = () => {
 
 // 搜索防抖
 watch(resultInfo, () => {
+  // 如果是通过历史点击设置的输入，跳过本次防抖触发
+  if (suppressSuggest.value) {
+    suppressSuggest.value = false
+    return
+  }
   if(debounceTimer) {
     clearTimeout(debounceTimer)
   }
   if(resultInfo.value) {
+    // 立即清空现有建议，避免在新建议加载前显示旧数据
+    resultCon.value = []
     debounceTimer = setTimeout(() => {
       resultData()
+      showList.value = false
     }, 500)
   }
 })
@@ -104,6 +121,8 @@ watch(resultInfo, () => {
 // 点击搜索历史，展示搜索列表
 const onHisItem = (name:string) => {
   showList.value = true
+  // 标记为历史触发，避免 watch 的防抖继续展示建议
+  suppressSuggest.value = true
   resultInfo.value = name
   isActive.value = true
   getListData()
@@ -124,7 +143,7 @@ const onHisItem = (name:string) => {
         @focus="isActive = true"
         v-model.trim="resultInfo"
       >
-      <uni-icons v-if="resultInfo" class="icon" type="clear" size="25" color="#ccc" />
+      <uni-icons v-if="resultInfo" class="icon" type="clear" size="25" color="#ccc" @click="clearResult" />
     </view>
     <text
       class="del"
@@ -134,10 +153,11 @@ const onHisItem = (name:string) => {
       取消
     </text>
   </view>
+  <view class="search-placeholder"></view>
+  <searchResult v-if="resultInfo && !showList" :resultCon="resultCon" @onHisItem="onHisItem" />
   <searchList v-if="showList" :searchListData="searchListData" @goPlay="goPlay" />
-  <searchResult v-if="resultInfo && !showList" :resultCon="resultCon" />
-  <view v-else-if="hotData.length && !showList">
-    <searchHistory v-if="searchHis && searchHis.length > 0" :searchHis="searchHis" @onHisItem="onHisItem" />
+  <view v-else-if="hotData.length && !resultInfo">
+    <searchHistory v-if="searchHis && searchHis.length > 0" :searchHis="searchHis" @onHisItem="onHisItem" @clearHis="clearHis" />
     <searchHotList :hotData="hotData" @onHisItem="onHisItem" />
   </view>
 </template>
@@ -148,6 +168,12 @@ const onHisItem = (name:string) => {
   padding: 10px;  
   display: flex;
   // background: black;
+  position: fixed;
+  top: 44px;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: #fff;
   .inp{
     flex: 1;
     height: 100%;
@@ -155,6 +181,7 @@ const onHisItem = (name:string) => {
     align-items: center;
     border-radius: 5px;
     overflow: hidden;
+    position: relative;
   }
   .search-icon{
     width: 34px;
@@ -175,23 +202,31 @@ const onHisItem = (name:string) => {
     border: none;
     background: #f8f8f8;
     color: black;
-    padding: 8px;
+    padding: 8px 44px 8px 8px;
     position: relative;
   }
   .icon{
     width: 24px;
     height: 24px;
-    // padding: 0 8px;
     flex-shrink: 0;
     position: absolute;
-    right: 60px;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 5;
   }
+}
+
+.search-placeholder{
+  height: 56px;
 }
 
 .input-placeholder{
   color: #b3b3b3;
-  font-size: 14px; /* 字体大小 */
+  font-size: 14px;
 }
+
 .del{
   width: 38px;
   text-align: right;

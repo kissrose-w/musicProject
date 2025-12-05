@@ -6,11 +6,12 @@ interface Props {
 }
 
 interface Emits {
-  onHisItem: [name: string]
+  onHisItem: [name: string],
+  clearHis: []
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
+const emits = defineEmits<Emits>()
 
 </script>
 
@@ -20,10 +21,10 @@ const emit = defineEmits<Emits>()
       <view class="icon"></view>
       <span>搜索历史</span>
     </view>
-    <uni-icons type="trash" size="20" color="#ccc" />
+    <uni-icons type="trash" size="20" color="#ccc" @click="emits('clearHis')" />
   </view>
   <view class="hisName">
-    <text v-for="(item, index) in props.searchHis" :key="item" @click="emit('onHisItem', item)">{{ item }}</text>
+    <text v-for="(item, index) in props.searchHis" :key="item" @click="emits('onHisItem', item)">{{ item }}</text>
   </view>
 </template>
 
@@ -56,14 +57,14 @@ const emit = defineEmits<Emits>()
     display: flex;
     flex-wrap: wrap;
     text{
-      border-color: #ddd;
-      background-color: #ddd;
-      color: #333;
+      border-color: #f1f1f1;
+      background-color: #f1f1f1;
+      color: black;
       border-radius: 15px;
-      font-size: 12px;
-      padding: 2px 5px;
-      font-weight: 200;
-      line-height: 14px;
+      font-size: 14px;
+      padding: 2px 10px;
+      font-weight: 300;
+      line-height: 20px;
       margin: 0 10px 10px 0;
     }
   }

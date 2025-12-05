@@ -11,7 +11,7 @@ interface Emits {
   onHisItem: [name: string]
 }
 
-const emit = defineEmits<Emits>()
+const emits = defineEmits<Emits>()
 const props = defineProps<Props>()
 
 </script>
@@ -26,11 +26,14 @@ const props = defineProps<Props>()
       class="hotName"
       v-for="(item, index) in props.hotData" 
       :key="item.searchWord"
-      @click="emit('onHisItem', item.searchWord)"
+      @click="emits('onHisItem', item.searchWord)"
     >
-    <text>{{ index + 1 }}</text>
-    <span>{{ item.searchWord }}</span>
-    <span class="img"><img v-if="item.iconUrl" :src="item.iconUrl"></span>
+      <view class="left">
+        <text :class="{ red: index + 1 <= 3 }">{{ index + 1 }}</text>
+        <view class="word">{{ item.searchWord }} <view class="tag" v-if="item.content">{{ item.content }}</view></view>
+        <span class="img"><img v-if="item.iconUrl" :src="item.iconUrl"></span>
+      </view>
+      <view class="score">{{ item.score }}</view>
     </view>
   </view>
 </template>
@@ -55,28 +58,47 @@ const props = defineProps<Props>()
   }
   .hotCon{
     padding: 10px;
-    font-size: 14px;
+    font-size: 18px;
     color: #000;
     .hotName{
-      height: 30px;
+      min-height: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      .left{
+        display: flex;
+        align-items: center;
+        .word{
+          display: flex;
+          flex-direction: column;
+        }
+        .tag{
+          font-size: 14px;
+          color: #ccc;
+        }
+      }
       text{
         width: 20px;
         text-align: left;
+        margin-right: 10px;
+        color: #ccc;
+        &.red{
+          color: red;
+        }
+      }
+      .score{
         margin-right: 5px;
+        font-size: 14px;
+        color: #ccc;
       }
       .img{
-        position: relative;
+        padding-top: 2px;
         margin-left: 5px;
       }
       img{
-        width: 15px;
+        width: 14px;
         height: 16px;
-        position: absolute;
-        left: 0;
-        top: 3px;
-        right: 0;
-        bottom: 0;
-        overflow: hidden;
       }
     }
   }
