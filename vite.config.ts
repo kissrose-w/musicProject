@@ -11,7 +11,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://music.zyxcl.xyz/',
+        // http://10.55.6.70:5001/
+        // https://music.zyxcl.xyz
+        target: 'https://music.zyxcl.xyz',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, '')
@@ -19,3 +21,12 @@ export default defineConfig({
     }
   }
 });
+
+
+
+
+			// https://zyxcl.github.io/MusicApp/static/icon/faxian.png
+			// https://zyxcl.github.io/MusicApp/static/icon/faxian_1.png
+
+			// https://zyxcl.github.io/MusicApp/static/icon/wode.png
+			// https://zyxcl.github.io/MusicApp/static/icon/wode_1.png

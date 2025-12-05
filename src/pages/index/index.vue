@@ -58,7 +58,7 @@ const videoTitle = ref() //视频合集标题
 const homePage = async () =>{
   try{
     const res = await homepageApi()
-    console.log(res.data.blocks[3].creatives)
+    // console.log(res.data.blocks[3].creatives)
     navSwiper.value = res.data.blocks[1].creatives[0]?.resources
     swiperData.value = res.data.blocks[0].extInfo.banners
     recommendationInfo.value = res.data.blocks[2].creatives
