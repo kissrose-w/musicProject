@@ -104,4 +104,3 @@ export const cookieApi = () => {
     url:'/api//register/anonimous'
   })
 }
->>>>>>> master
