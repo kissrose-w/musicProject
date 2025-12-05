@@ -12,7 +12,8 @@ export const homepageApi = () =>{
 
 // 搜索接口
 type searchParams = {
-  keywords: string | number
+  keywords: string | number,
+  limit?: number
 }
 const instance = axios.create({
   baseURL: '/api/',  // 设置默认路径
@@ -27,8 +28,8 @@ export const searchResultInfo = ({keywords}: searchParams) => {
   return instance.get<SearchSuggestResponse>(`/search/suggest?keywords=${keywords}&type=mobile`)
 }
 // 搜索列表
-export const searchListInfo = ({keywords}: searchParams) => {
-  return instance.get<SearchListResponse>(`/search`, { params: { keywords } })
+export const searchListInfo = ({keywords, limit = 30}: searchParams) => {
+  return instance.get<SearchListResponse>(`/search`, { params: { keywords, limit } })
 }
 
 
@@ -38,13 +39,12 @@ export const searchListInfo = ({keywords}: searchParams) => {
 export const getPLDetailApi = (id?: number) => {
   let url = '';
   if(id) {
-    url = '/api/playlist/detail';
+    url = `/api/playlist/detail?id=${id}`;
   } else {
     url = '/api/recommend/songs'
   };
   return request<PLDetail>({
     url,
-    id
   })
 }
 
@@ -78,7 +78,7 @@ export const radioApi = () =>{
 // 获取播放音乐url
 export const radioUrlApi = (id:number | string) =>{
   return request({
-    url:`/api/song/url?id=${id}`,
+    url:`/api/song/url?id=${id}`
   })
 }
 

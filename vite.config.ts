@@ -11,11 +11,16 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
+<<<<<<< HEAD
         // http://10.55.6.70:5001/
         // https://music.zyxcl.xyz
         target: 'https://music.zyxcl.xyz',
+=======
+        target: 'https://music.zyxcl.xyz/',
+>>>>>>> master
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '') 
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
   }
