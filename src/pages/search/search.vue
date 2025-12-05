@@ -30,10 +30,15 @@ document.addEventListener('keydown', e => {
   }
 })
 
-// 跳转播放器
-const goPlay = () => {
+// 跳转播放器，接收歌曲 id 并传到播放器页面
+const goPlay = (id?: number) => {
+  if (id == null) {
+    router.push({ path: '/pages/player/player' })
+    return
+  }
   router.push({
-    path: '../palyer/player.vue'
+    path: '/pages/player/player',
+    query: { id: String(id) }
   })
 }
 
