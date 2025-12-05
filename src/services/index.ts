@@ -81,3 +81,10 @@ export const radioUrlApi = (id:number | string) =>{
     url:`/api/song/url?id=${id}`,
   })
 }
+
+// 获取音乐详情
+export const songDetailApi = (id: number | string) => {
+  return request({
+    url: `/api/song/detail?ids=${id}`
+  })
+}

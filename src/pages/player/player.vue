@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onLoad,onUnload,onHide,onShow} from '@dcloudio/uni-app'
 import { ref, watch,computed} from 'vue'
-import { radioApi,radioUrlApi } from "../../services/index"
+import { radioApi,radioUrlApi, songDetailApi } from "../../services/index"
 const radioBGInfo = ref([])
 const radioUrl = ref("")
 const playInfo = ref<{time?:number}>({})
@@ -36,6 +36,7 @@ onLoad((query?: Params) => {
   console.log(query?.id) //打印出上个页面传递的参数
   curId.value = query?.id!
   getRadioUrl()
+  getSongDetail();
   isPlay.value = true
   timer.value = setInterval(() => {
     if (isPlay.value && curTime.value < totalTime.value) {
@@ -63,6 +64,7 @@ onShow(() => {
     player.play()
   }
 })
+// 获取歌曲url
 const getRadioUrl = async() => {
   try {
     const res = await radioUrlApi(curId.value)
@@ -75,6 +77,16 @@ const getRadioUrl = async() => {
     console.log(error)
   }
 }
+// 获取歌曲详情
+const getSongDetail = async () => {
+  try {
+    const res = await songDetailApi(curId.value);
+    console.log(res);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 const ifPlay = () => {
   isPlay.value = !isPlay.value
   if(isPlay.value){
