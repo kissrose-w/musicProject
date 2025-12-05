@@ -14,13 +14,13 @@ const isActive = ref<boolean>(false)
 const hotData = ref<HotItem[]>([])
 const resultInfo = ref<string>('')
 const resultCon = ref<conItem[]>([])
-// 点击历史时抑制接下来的防抖建议触发
-const suppressSuggest = ref<boolean>(false)
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
 const searchListData = ref<song[]>([])
 const searchHis = ref<string[]>([])
 const showList = ref<boolean>(false)
 const router = useRouter()
+// 点击历史时抑制接下来的防抖建议触发
+const suppressSuggest = ref<boolean>(false)
 
 document.addEventListener('keydown', e => {
   if(e.keyCode === 13 && resultInfo) {
@@ -65,7 +65,7 @@ const getListData = async () => {
       searchHis.value.unshift(resultInfo.value)
       localStorage.setItem('name', JSON.stringify(searchHis.value))
     }
-    const res = await searchListInfo({ keywords: resultInfo.value })
+    const res = await searchListInfo({ keywords: resultInfo.value, limit: 50 })
     searchListData.value = res.data.result.songs
   } catch(e) {
     console.log(e)
@@ -76,7 +76,7 @@ const getListData = async () => {
 const resultData = async () => {
   try {
     console.log('触发搜索建议')
-    const res = await searchResultInfo({ keywords: resultInfo.value })
+    const res = await searchResultInfo({ keywords: resultInfo.value, limit: 50 })
     resultCon.value = res.data.result?.allMatch ?? []
   } catch(e) {
     console.log(e)
@@ -133,7 +133,10 @@ const onHisItem = (name:string) => {
 <template>
   <view class="search">
     <view class="inp">
-      <view class="search-icon" @click="clearResult">
+      <view 
+        class="search-icon" 
+        @click="clearResult"
+      >
         <uni-icons type="search" size="20" color="#ccc" />
       </view>
       <input 
@@ -143,7 +146,14 @@ const onHisItem = (name:string) => {
         @focus="isActive = true"
         v-model.trim="resultInfo"
       >
-      <uni-icons v-if="resultInfo" class="icon" type="clear" size="25" color="#ccc" @click="clearResult" />
+      <uni-icons 
+        v-if="resultInfo" 
+        class="icon" 
+        type="clear" 
+        size="25" 
+        color="#ccc" 
+        @click="clearResult" 
+      />
     </view>
     <text
       class="del"
@@ -154,11 +164,31 @@ const onHisItem = (name:string) => {
     </text>
   </view>
   <view class="search-placeholder"></view>
-  <searchResult v-if="resultInfo && !showList" :resultCon="resultCon" @onHisItem="onHisItem" />
-  <searchList v-if="showList" :searchListData="searchListData" @goPlay="goPlay" />
-  <view v-else-if="hotData.length && !resultInfo">
-    <searchHistory v-if="searchHis && searchHis.length > 0" :searchHis="searchHis" @onHisItem="onHisItem" @clearHis="clearHis" />
-    <searchHotList :hotData="hotData" @onHisItem="onHisItem" />
+  <searchResult 
+    v-if="resultInfo && !showList" 
+    :resultCon="resultCon" 
+    @onHisItem="onHisItem" 
+    :name="resultInfo"
+  />
+  <searchList 
+    v-if="showList" 
+    :name="resultInfo"
+    :searchListData="searchListData" 
+    @goPlay="goPlay" 
+  />
+  <view 
+    v-else-if="hotData.length && !resultInfo"
+  >
+    <searchHistory 
+      v-if="searchHis && searchHis.length > 0" 
+      :searchHis="searchHis" 
+      @onHisItem="onHisItem" 
+      @clearHis="clearHis" 
+    />
+    <searchHotList 
+      :hotData="hotData"
+      @onHisItem="onHisItem" 
+    />
   </view>
 </template>
 
@@ -179,7 +209,7 @@ const onHisItem = (name:string) => {
     height: 100%;
     display: flex;
     align-items: center;
-    border-radius: 5px;
+    border-radius: 20px;
     overflow: hidden;
     position: relative;
   }

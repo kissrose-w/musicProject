@@ -30,7 +30,17 @@ const props = defineProps<Props>()
     >
       <view class="left">
         <text :class="{ red: index + 1 <= 3 }">{{ index + 1 }}</text>
-        <view class="word">{{ item.searchWord }} <view class="tag" v-if="item.content">{{ item.content }}</view></view>
+        <view 
+          class="word"
+        >
+          {{ item.searchWord }} 
+          <view 
+            class="tag"
+            v-if="item.content"
+          >
+            {{ item.content }}
+          </view>
+        </view>
         <span class="img"><img v-if="item.iconUrl" :src="item.iconUrl"></span>
       </view>
       <view class="score">{{ item.score }}</view>
