@@ -8,7 +8,7 @@ const props = defineProps({
   searchListData: { type: Array as PropType<song[]>, required: false },
   name: { type: String as PropType<string>, required: false }
 })
-const emits = defineEmits(['goPlay'])
+const emits = defineEmits<{ (e: 'goPlay', id: number): void }>()
 const list = computed(() => (props.searchListData ?? []) as song[])
 
 
@@ -21,7 +21,7 @@ const list = computed(() => (props.searchListData ?? []) as song[])
         class="listName" 
         v-for="item in list" 
         :key="item.id" 
-          @click="emits('goPlay')"
+        @click="emits('goPlay', item.id)"
       >
         <view :class="{active: props.name && item.name.includes(props.name)}">{{ item.name }}</view>
         <view :class="['artist', {active: props.name && item.artists[0].name.includes(props.name)}]">
