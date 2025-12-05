@@ -51,13 +51,13 @@ export const getCommentApi = (id: number) => {
 }
 
 
-
+// 获取官方榜
 export const officialChartApi = () => {
     return request<officialChart>({
       url:"https://music.zyxcl.xyz/toplist/detail"
     })
 }
-
+// 获取我的
 export const mineApi = ()=>{
   return request({
     url:"https://music.zyxcl.xyz/user/playlist?uid=9862787213"
@@ -69,9 +69,9 @@ export const radioApi = () =>{
     url:"https://music.zyxcl.xyz/playlist/detail?id=757439549"
   })
 }
-
-export const radioUrlApi = () =>{
+// 获取播放音乐url
+export const radioUrlApi = (id:number | string) =>{
   return request({
-    url:"https://music.zyxcl.xyz/song/url?id=515453363"
+    url:`https://music.zyxcl.xyz/song/url?id=${id}`,
   })
 }
