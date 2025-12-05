@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { getCommentApi, getPLDetailApi } from '@/services';
 import { ref } from 'vue';
-import type { PLDetail, Playlist, User } from '@/services/type';
-import SongList from './components/songList.vue';
+import type { Playlist, Song } from '@/services/type';
+import SongList from '@/components/SongList.vue';
 import Comment from '@/components/comment.vue';
 import { onLoad } from '@dcloudio/uni-app';
 
@@ -11,6 +11,7 @@ const playList = ref<Playlist | null>(null);
 const show = ref(false);
 const commentList = ref([]);
 const hotComments = ref([]);
+const dailySongs = ref<Song[]>([]);
 
 
 const curId = ref<number>()
@@ -23,7 +24,7 @@ onLoad(async (query?: Params) => {
   console.log(query?.id); //打印出上个页面传递的参数。
   curId.value = query?.id!
   
-  getPLDetail(curId.value);
+  await getPLDetail(curId.value);
 })
 
 const getPLDetail = async (id: number) => {
@@ -31,7 +32,8 @@ const getPLDetail = async (id: number) => {
     console.log(curId.value)
     const res = await getPLDetailApi(id);
     console.log(res);
-    playList.value = res.playlist;
+    if (id) playList.value = res.playlist;
+    else dailySongs.value = res.data.dailySongs;
   } catch (e) {
     console.log(e)
   }
@@ -52,10 +54,7 @@ const getCommentList = async (id: number) => {
 
 const goPlayer = (id: number) => {
   uni.navigateTo({
-    url: `/pages/player/player?id=${id}`,
-    // params: {
-    //   id
-    // }
+    url: `/pages/player/player?id=${id}`
   })
   console.log(id)
 }
@@ -74,7 +73,7 @@ const showComment = async (commentThreadId?: string) => {
 <template>
   <view class="wrap">
     <view class="content">
-      <view class="header">
+      <view class="header" v-if="playList">
         <view class="bg" :style="`background-image: url(${playList?.coverImgUrl})`">
           <!-- <image :src="playList?.coverImgUrl"  /> -->
         </view>
@@ -85,7 +84,7 @@ const showComment = async (commentThreadId?: string) => {
               <image :src="playList?.coverImgUrl" />
             </view>
             <view class="title">
-              <h3>{{ playList?.name }}</h3>
+              <h3>{{ playList?.name}}</h3>
               <p>
                 <span class="avatar" :style="`background-image: url(${playList?.creator.avatarUrl})`"></span>
                 <span class="username">
@@ -119,16 +118,25 @@ const showComment = async (commentThreadId?: string) => {
           </view>
         </view>
       </view>
+      <view class="dailyHeader" v-else>
+        <view class="bg" :style="`background-image: url(${dailySongs[0]?.al.picUrl})`"></view>
+        <!-- {{ dailySongs[0] }} -->
+        <view class="mark">
+          <view class="daily" :style="`background-image: url(${dailySongs[0]?.al.picUrl})`">
+            每日推荐
+          </view>
+        </view>
+      </view>
       <view class="list">
         <view class="allPlay">
           <svg t="1764812358296" class="icon" viewBox="0 0 1085 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="16678" id="mx_n_1764812358296" width="26" height="26">
             <path d="M546.904228 18.10573c-277.76918 0-502.94529 225.17611-502.94529 502.94529 0 277.77164 225.17488 502.94775 502.94529 502.94775 277.76795 0 502.94529-225.17611 502.94529-502.94775C1049.849518 243.28307 824.672178 18.10573 546.904228 18.10573L546.904228 18.10573zM546.904228 973.701659c-249.992631 0-452.651868-202.659237-452.651868-452.651868 0-249.990172 202.659237-452.649408 452.651868-452.649408s452.650638 202.659237 452.650638 452.649408C999.554866 771.042422 796.896859 973.701659 546.904228 973.701659L546.904228 973.701659zM775.203924 485.406478c-78.267962-53.25591-220.1919-132.967608-301.004232-182.358388-33.132146-20.893592-60.993549-12.502952-63.667043 24.399633-1.938099 98.840588 0 289.550264 0 390.101445 1.681079 37.462125 34.709926 42.403293 63.37559 27.362121 80.72133-48.906255 219.456505-132.95777 300.588574-182.112436C773.968017 562.476656 836.097862 528.305364 775.203924 485.406478L775.203924 485.406478z" fill="#c84341" p-id="16679"></path>
           </svg>
-          <span>播放全部({{ playList?.trackCount }})</span>
+          <span>播放全部({{ playList?.trackCount || dailySongs.length }})</span>
           <view class="border-bottom"></view>
         </view>
         <SongList
-          :songList="playList?.tracks"
+          :songList="playList?.tracks || dailySongs"
           @goPlayer="goPlayer"
         />
       </view>
@@ -145,27 +153,64 @@ const showComment = async (commentThreadId?: string) => {
 
 <style lang="scss" scoped>
 
-
+.dailyHeader{
+  width: 100%;
+  height: 500rpx;
+  position: relative;
+  padding: 30rpx 80rpx;
+  overflow: hidden;
+  // color: #fff;
+  .mark{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba($color: #ffffff, $alpha: .2);
+    z-index: 2;
+    // background-color: aqua;
+    // -webkit-background-clip: text;
+    // background-clip: text;
+    // -webkit-text-fill-color: transparent;
+    // color: transparent;
+    font-size: 50px;
+    .daily{
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      font-size: 65px;
+      font-weight: 700;
+      font-style: italic;
+      text-align: center;
+      font-family: "楷体";
+      line-height: 400rpx;
+    }
+  }
+}
 
 .header{
   width: 100%;
   position: relative;
   padding: 30rpx;
   overflow: hidden;
-  color: #fff;  
-  .bg{
-    position: absolute;
-    top: 0;
-    left: 0;
-    filter: blur(20px);
-    width: 100%;
-    height: 100%;
-    // background: #ccc;
-    background-size: cover;
-    background-repeat: no-repeat;
-    transform: scale(1.5);
-    z-index: 1;
-  }
+  color: #fff;
+}
+
+.bg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(10rpx);
+  // background: #ccc;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  transform: scale(1.5);
+  z-index: 1;
+  
 }
 
 .header-content{

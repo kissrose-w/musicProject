@@ -97,6 +97,12 @@ export type Song = {
   id: number;
   name: string;
   ar: Ava[];
+  al: {
+    id: number;
+    name: string;
+    pic: number;
+    picUrl: string;
+  }
 }
 
 // 作者
@@ -150,6 +156,11 @@ export type Playlist = {
   tracks: Song[];
 };
 
+// 日推内容类型
+export type DailySongs = {
+  dailySongs: Song[]
+}
+
 // 歌单详情类型
 export type PLDetail = {
   code: number;
@@ -162,6 +173,7 @@ export type PLDetail = {
   sharedPrivilege?: null;
   songFromUsers?: null;
   urls?: null;
+  data: DailySongs;
 }
 
 // 歌单创建者类型

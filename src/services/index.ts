@@ -35,9 +35,15 @@ export const searchListInfo = ({keywords}: searchParams) => {
 
 
 // 获取歌单详情
-export const getPLDetailApi = (id: number) => {
+export const getPLDetailApi = (id?: number) => {
+  let url = '';
+  if(id) {
+    url = '/api/playlist/detail';
+  } else {
+    url = '/api/recommend/songs'
+  };
   return request<PLDetail>({
-    url: '/api/playlist/detail',
+    url,
     id
   })
 }

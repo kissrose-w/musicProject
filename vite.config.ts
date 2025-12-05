@@ -11,6 +11,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
+        // http://10.55.6.70:5001/
+        // https://music.zyxcl.xyz
         target: 'https://music.zyxcl.xyz',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '') 
