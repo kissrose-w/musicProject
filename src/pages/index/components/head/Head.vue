@@ -85,8 +85,8 @@ const list:List = [
 ]
 
 const goMine = () =>{
-  uni.navigateTo({
-    url: 'pages/player/player'
+  uni.switchTab({
+    url: '/pages/mine/mine'
   });
 }
 </script>
