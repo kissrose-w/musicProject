@@ -23,9 +23,9 @@ const getMine = async() => {
 }
 getMine()
 const toMyLike = (e:any) => {
-  const { id } = e.target.dataset
+  const { id } = e.currentTarget.dataset
   uni.navigateTo({
-    url:`/pages/player/player?id=${id}`
+    url:`/pages/playList/playList?id=${id}`
   }) 
 }
 </script>
