@@ -155,7 +155,7 @@ const showComment = async (commentThreadId?: string) => {
 
 .dailyHeader{
   width: 100%;
-  height: 500rpx;
+  height: 400rpx;
   position: relative;
   padding: 30rpx 80rpx;
   overflow: hidden;
