@@ -7,7 +7,7 @@ import request from "./request";
 //主页接口
 export const homepageApi = () =>{
   return request({
-    url:"https://music.zyxcl.xyz/homepage/block/page"
+    url:"/api/homepage/block/page"
   })}
 
 // 搜索接口
@@ -15,7 +15,7 @@ type searchParams = {
   keywords: string | number
 }
 const instance = axios.create({
-  baseURL: 'https://music.zyxcl.xyz/',  // 设置默认路径
+  baseURL: '/api/',  // 设置默认路径
   timeout: 10000,  // 可选：设置超时时间
 });
 // 热门搜索
@@ -37,7 +37,7 @@ export const searchListInfo = ({keywords}: searchParams) => {
 // 获取歌单详情
 export const getPLDetailApi = (id: number) => {
   return request<PLDetail>({
-    url: 'https://music.zyxcl.xyz/playlist/detail',
+    url: '/api/playlist/detail',
     id
   })
 }
@@ -45,7 +45,7 @@ export const getPLDetailApi = (id: number) => {
 // 获取歌单评论详情
 export const getCommentApi = (id: number) => {
   return request({
-    url: 'https://music.zyxcl.xyz/comment/playlist',
+    url: '/api/comment/playlist',
     id
   })
 }
@@ -54,24 +54,24 @@ export const getCommentApi = (id: number) => {
 
 export const officialChartApi = () => {
     return request<officialChart>({
-      url:"https://music.zyxcl.xyz/toplist/detail"
+      url:"/api/toplist/detail"
     })
 }
 
 export const mineApi = ()=>{
   return request({
-    url:"https://music.zyxcl.xyz/user/playlist?uid=9862787213"
+    url:"/api/user/playlist?uid=9862787213"
   })
 }
 
 export const radioApi = () =>{
   return request({
-    url:"https://music.zyxcl.xyz/playlist/detail?id=757439549"
+    url:"/api/playlist/detail?id=757439549"
   })
 }
 
 export const radioUrlApi = () =>{
   return request({
-    url:"https://music.zyxcl.xyz/song/url?id=515453363"
+    url:"/api/song/url?id=515453363"
   })
 }

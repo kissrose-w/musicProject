@@ -8,4 +8,13 @@ export default defineConfig({
       '@': '/src',
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://music.zyxcl.xyz',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '') 
+      }
+    }
+  }
 });
