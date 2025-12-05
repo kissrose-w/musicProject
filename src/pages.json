@@ -47,15 +47,7 @@
       "path": "pages/player/player", 
       "style": {
 				"navigationBarBackgroundColor":"#C20C0C",
-        "navigationBarTitleText": "歌单",
-				"navigationBarTextStyle":"white"
-      }
-    },
-		{
-      "path": "pages/radio/radio", 
-      "style": {
-				"navigationBarBackgroundColor":"#C20C0C",
-        "navigationBarTitleText": "radio",
+        "navigationBarTitleText": "歌曲播放",
 				"navigationBarTextStyle":"white"
       }
     }

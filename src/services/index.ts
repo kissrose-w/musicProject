@@ -51,13 +51,13 @@ export const getCommentApi = (id: number) => {
 }
 
 
-
+// 获取官方榜
 export const officialChartApi = () => {
     return request<officialChart>({
       url:"/api/toplist/detail"
     })
 }
-
+// 获取我的
 export const mineApi = ()=>{
   return request({
     url:"/api/user/playlist?uid=9862787213"
@@ -69,9 +69,9 @@ export const radioApi = () =>{
     url:"/api/playlist/detail?id=757439549"
   })
 }
-
-export const radioUrlApi = () =>{
+// 获取播放音乐url
+export const radioUrlApi = (id:number | string) =>{
   return request({
-    url:"/api/song/url?id=515453363"
+    url:`/api/song/url?id=${id}`,
   })
 }

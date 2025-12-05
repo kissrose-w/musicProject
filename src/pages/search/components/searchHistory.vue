@@ -16,11 +16,14 @@ const emit = defineEmits<Emits>()
 
 <template>
   <view class="hisTitle">
-    <view class="icon"></view>
-    <span>搜索历史</span>
+    <view class="hisCon">
+      <view class="icon"></view>
+      <span>搜索历史</span>
+    </view>
+    <uni-icons type="trash" size="20" color="#ccc" />
   </view>
   <view class="hisName">
-    <text v-for="item in props.searchHis" :key="item" @click="emit('onHisItem', item)">{{ item }}</text>
+    <text v-for="(item, index) in props.searchHis" :key="item" @click="emit('onHisItem', item)">{{ item }}</text>
   </view>
 </template>
 
@@ -29,6 +32,11 @@ const emit = defineEmits<Emits>()
     display: flex;
     align-items: center;
     padding: 12px 10px;
+    justify-content: space-between;
+    .hisCon{
+      display: flex;
+      align-items: center;
+    }
     span{
       font-size: 14px;
       color: rgb(51, 51, 51);

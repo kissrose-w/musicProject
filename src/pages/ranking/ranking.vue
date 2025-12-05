@@ -7,7 +7,7 @@ const officialList = ref<officialChart | any[]>([])
 const getOfficialChart = async()=>{
   try {
     const res = await officialChartApi()
-    console.log("官方榜",res.list)
+    // console.log("官方榜",res.list)
     officialList.value = res.list
   } catch (error) {
     console.log(error.message)
@@ -19,7 +19,7 @@ getOfficialChart()
   const { id } = e.currentTarget.dataset
   console.log(id)
   uni.navigateTo({
-    url:`/pages/player/player?id=${id}`
+    url:`/pages/playList/playList?id=${id}`
   })
 }
 </script>
@@ -87,7 +87,7 @@ getOfficialChart()
   }
 }
 .official-item{
-  height:130px;
+  min-height:130px;
   padding:10px;
   border: 1px solid #EBEEF5;
   box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 3px 1px;

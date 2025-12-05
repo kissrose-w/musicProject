@@ -1,6 +1,6 @@
 
 <script setup lang='ts'>
-import { ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import searchResult from './components/searchResult.vue'
 import searchHotList from './components/searchHotList.vue'
 import searchHistory from './components/searchHistory.vue'
@@ -32,6 +32,9 @@ const getData = async () => {
     const res = await searchHotInfo()
     console.log(res)
     hotData.value = res.data.data
+    if(localStorage.getItem('name')){
+      searchHis.value = (JSON.parse(localStorage.getItem('name')))
+    }
   } catch(e) {
     console.log(e)
   }
@@ -41,8 +44,9 @@ getData()
 // 搜索列表
 const getListData = async () => {
   try {
-    if(!searchHis.value.includes(resultInfo.value)){
+    if(!searchHis.value?.includes(resultInfo.value)){
       searchHis.value.push(resultInfo.value)
+      localStorage.setItem('name', JSON.stringify(searchHis.value))
     }
     const res = await searchListInfo({ keywords: resultInfo.value })
     searchListData.value = res.data.result.songs
@@ -60,6 +64,11 @@ const resultData = async () => {
   } catch(e) {
     console.log(e)
   }
+}
+
+const clearResult = () => {
+  console.log('clearResult')
+  resultInfo.value = ''
 }
 
 // 取消搜索内容展示
@@ -96,7 +105,9 @@ const onHisItem = (name:string) => {
 <template>
   <view class="search">
     <view class="inp">
-      <view class="search-icon"></view>
+      <view class="search-icon" @click="clearResult">
+        <uni-icons type="search" size="20" color="#ccc" />
+      </view>
       <input 
         type="text"
         placeholder="请输入要搜索的歌曲/歌手"
@@ -104,7 +115,7 @@ const onHisItem = (name:string) => {
         @focus="isActive = true"
         v-model.trim="resultInfo"
       >
-      <!-- <uni-icons type="search" size="24" color="#ff0000" /> -->
+      <uni-icons v-if="resultInfo" class="icon" type="clear" size="25" color="#ccc" />
     </view>
     <text
       class="del"
@@ -117,7 +128,7 @@ const onHisItem = (name:string) => {
   <searchList v-if="showList" :searchListData="searchListData" />
   <searchResult v-if="resultInfo && !showList" :resultCon="resultCon" />
   <view v-else-if="hotData.length && !showList">
-    <searchHistory v-if="searchHis.length > 0" :searchHis="searchHis" @onHisItem="onHisItem" />
+    <searchHistory v-if="searchHis && searchHis.length > 0" :searchHis="searchHis" @onHisItem="onHisItem" />
     <searchHotList :hotData="hotData" @onHisItem="onHisItem" />
   </view>
 </template>
@@ -141,6 +152,13 @@ const onHisItem = (name:string) => {
     height: 100%;
     background: #f8f8f8;
     border: none;
+    line-height: 36px;
+    text-align: center;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
   }
   input{
     flex: 1;
@@ -151,13 +169,12 @@ const onHisItem = (name:string) => {
     padding: 8px;
     position: relative;
   }
-  uni-icons{
+  .icon{
     width: 24px;
     height: 24px;
     // padding: 0 8px;
     flex-shrink: 0;
     position: absolute;
-    z-index: 10;
     right: 60px;
   }
 }
