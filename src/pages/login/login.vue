@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { telLoginApi,cookieApi } from '@/services';
+import { telLoginApi,getKeyApi,getQRCodeApi,getStatusApi  } from '@/services';
 const formRef = ref(null) 
-// const cookie = ref('') //存cookie
+const show = ref(false)
+const cookie = ref('') //存cookie
+const keyData = ref('') //二维码key
+const imgSrc = ref('') //二维码图片地址
+const timeOut = ref(null)
 const formData = ref({
   tel:'',
   password:''
@@ -46,15 +50,6 @@ const rules = ref({
   }
 })
 
-const cookieInfo = async () =>{
-  try{
-    const res = await cookieApi()
-    localStorage.setItem('cookie',res.cookie)
-  }catch(e){
-    console.error(e)
-  }
-} 
-cookieInfo()
 const loginTo = async () =>{
   if(!formRef.value) return
   console.log(formRef.value.validate())
@@ -66,6 +61,67 @@ const loginTo = async () =>{
     console.error('登陆失败', e);
   }
 }
+
+//获取二维码key
+const getKey = async () =>{
+  try{
+    const res = await getKeyApi()
+    keyData.value = res.data.unikey
+    console.log(keyData.value)
+  }catch(e){
+    console.error(e)
+    uni.showToast({ title: '获取二维码失败', icon: 'none' });
+    show.value = false;
+  }
+}
+getKey()
+
+
+//获取二维码图片
+const QRlogin = async () =>{
+  show.value = true
+  try{
+    const res = await getQRCodeApi(keyData.value,"qrimg")
+    imgSrc.value = res.data.qrimg
+    console.log(res.data)
+    timeOut.value = setTimeout(()=>{
+      getStatus()
+    },8000)
+  }catch(e){
+    console.error(e)
+  }
+}
+
+//获取登录状态
+const getStatus = async () =>{
+  try{
+    const res = await getStatusApi(keyData.value)
+    console.log(res.data)
+    if(res.code===803){
+      show.value=false
+      uni.switchTab({
+        url:'/pages/index/index'
+      })
+      if(timeOut.value) clearTimeout(timeOut.value)
+      uni.showToast({ title: '登录成功', icon: 'success' });
+    }
+    else if(res.code===801){
+      // getStatus()
+      timeOut.value = setTimeout(()=>{
+        getStatus()
+      },5000)
+    }
+    else{
+      if(timeOut.value) clearInterval(timeOut.value)
+      uni.showToast({ title: '登录失败，刷新重试', icon: 'none' });
+    }
+  }catch(e){
+    console.error(e)
+  }
+}
+
+
+
 </script>
 
 <template>
@@ -85,6 +141,13 @@ const loginTo = async () =>{
       </uni-forms>
       <button @click="loginTo">登录</button>
     </view>
+    <p @click="QRlogin">二维码登录</p>
+  </view>
+  <view class="dialog" v-if="show">
+    <view class="close" @click="show=false">❌</view>
+    <view class="dialog-con">
+      <image :src="imgSrc" />
+    </view>
   </view>
 </template>
 
@@ -93,6 +156,12 @@ const loginTo = async () =>{
   width: 100vw;
   height: 100vh;
   background-color: #cd5451;
+  >p{
+    text-align: center;
+    margin-top: 100px;
+    font-size: 14px;
+    color: #fff;
+  }
 }
 .title{
   height: 600rpx;
@@ -116,5 +185,27 @@ const loginTo = async () =>{
   margin-top: 8rpx;
   text-align: left;
   padding-left: 20rpx;
+}
+.dialog{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  opacity: 0.8;
+}
+.dialog-con{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 200px;
+  height: 200px;
+  >image{
+    width: 100%;
+    height: 100%;
+  }
+
 }
 </style>
