@@ -63,7 +63,7 @@ export const mineApi = ()=>{
     url:"https://music.zyxcl.xyz/user/playlist?uid=9862787213"
   })
 }
-
+// 临时背景
 export const radioApi = () =>{
   return request({
     url:"https://music.zyxcl.xyz/playlist/detail?id=757439549"
@@ -73,5 +73,11 @@ export const radioApi = () =>{
 export const radioUrlApi = (id:number | string) =>{
   return request({
     url:`https://music.zyxcl.xyz/song/url?id=${id}`,
+  })
+}
+// 获取歌词
+export const radioLyricApi = (id:number | string) =>{
+  return request({
+    url:`https://music.zyxcl.xyz/lyric?id=${id}`,
   })
 }
