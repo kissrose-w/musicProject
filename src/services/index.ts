@@ -107,6 +107,6 @@ export const cookieApi = () => {
 // 获取歌词
 export const radioLyricApi = (id:number | string) =>{
   return request({
-    url:`https://music.zyxcl.xyz/lyric?id=${id}`,
+    url:`/api/lyric?id=${id}`,
   })
 }
