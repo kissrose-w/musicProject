@@ -178,6 +178,7 @@ export type Comment = {
   liked: boolean;
   commentId: number
 }
+// 官方榜类型
 export type officialChart = {
   code:number,
   list:[]
