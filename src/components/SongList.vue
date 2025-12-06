@@ -72,8 +72,8 @@ console.log('songList props:', props.songList)
 .song-con{
   display: flex;
   flex-direction: column;
+  width: 530rpx;
   .title{
-    width: 530rpx;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -85,6 +85,8 @@ console.log('songList props:', props.songList)
     color: #999;
     font-size: 12px;
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 </style>
