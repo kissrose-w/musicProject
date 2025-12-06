@@ -21,7 +21,7 @@
             </view>
             <view class="right">
               <svg  v-if="!ispaly[card.resourceId]" t="1764826575118" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5946" width="16" height="16"><path d="M897.143467 597.051733l-464.648534 311.5264c-46.976 31.488-110.592 18.944-142.08-28.023466A102.4 102.4 0 0 1 273.066667 823.5264V200.4736c0-56.5504 45.8496-102.4 102.4-102.4a102.4 102.4 0 0 1 57.028266 17.348267l464.64 311.5264c46.976 31.488 59.528533 95.104 28.032 142.08a102.4 102.4 0 0 1-28.023466 28.023466z" p-id="5947"></path></svg>
-              <svg  v-else t="1764828824726" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="23905" width="16" height="16"><path d="M0 512h146.285714v475.428571H0V512zM292.571429 0h146.285714v987.648H292.571429V0z m292.571428 182.857143h146.285714v788.699428h-146.285714V182.857143z m292.571429 475.428571h146.285714v323.218286h-146.285714V658.285714z" fill="#d81e06" p-id="23906"></path></svg> 
+              <svg  v-else @click="player(card.resourceId)" t="1764828824726" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="23905" width="16" height="16"><path d="M0 512h146.285714v475.428571H0V512zM292.571429 0h146.285714v987.648H292.571429V0z m292.571428 182.857143h146.285714v788.699428h-146.285714V182.857143z m292.571429 475.428571h146.285714v323.218286h-146.285714V658.285714z" fill="#d81e06" p-id="23906"></path></svg> 
             </view>
           </view>
 				</swiper-item>
@@ -41,6 +41,11 @@ const player = (id:any) =>{
     return ispaly.value[key] = false
   }) 
   ispaly.value[id]=!cur
+  if(ispaly.value[id]){
+    uni.navigateTo({
+      url:`/pages/player/player?id=${id}`
+  })
+  }
   // console.log(ispaly.value[id],cur)
 }
 

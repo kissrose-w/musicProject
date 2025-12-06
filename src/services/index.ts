@@ -69,19 +69,13 @@ export const mineApi = ()=>{
     url:"/api/user/playlist?uid=9862787213"
   })
 }
-// 临时背景
-export const radioApi = () =>{
-  return request({
-    url:"/api/playlist/detail?id=757439549"
-  })
-}
+
 // 获取播放音乐url
 export const radioUrlApi = (id:number | string) =>{
   return request({
     url:`/api/song/url?id=${id}`
   })
 }
-
 
 // 获取音乐详情
 export const songDetailApi = (id: number | string) => {
@@ -98,15 +92,36 @@ export const telLoginApi = (phone:string ,password:string) => {
   })
 }
 
-//获取cookie
-export const cookieApi = () => {
-  return request({
-    url:'/api//register/anonimous'
-  })
-}
 // 获取歌词
 export const radioLyricApi = (id:number | string) =>{
   return request({
     url:`/api/lyric?id=${id}`,
   })
 }
+
+// 获取播放页评论
+export const playerCommentApi = (id:number | string) =>{
+  return request({
+    url:`/api/comment/music?id=${id}`,
+  })
+}
+
+//生成二维码key
+export const getKeyApi = () =>{
+  return request({
+    url:"/api/login/qr/key"
+  })
+}
+//获取二维码
+export const getQRCodeApi = (key:string,qrimg:string) =>{
+  return request({
+    url:`/api/login/qr/create?key=${key}&qrimg=${qrimg}`,
+  })
+}
+
+//扫码登录状态
+export const getStatusApi = (key:string) => {
+  return request({
+    url:`/api/login/qr/check?key=${key}`
+  })
+} 
