@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { onLoad,onUnload,onHide,onShow} from '@dcloudio/uni-app'
 import { ref, watch,computed} from 'vue'
-import { radioApi,radioUrlApi,radioLyricApi } from "../../services/index"
+import { radioApi,radioUrlApi,radioLyricApi, songDetailApi } from "../../services/index"
 import disk from './components/disk.vue'
 import bottomNav from './components/bottomNav.vue'
 import lyric from './components/lyric.vue'
-const radioBGInfo = ref([])
+const radioBGInfo = ref('')
 const radioUrl = ref("")
 const radiolyric = ref("")
 const playInfo = ref<{time?:number}>({})
@@ -98,6 +98,7 @@ const getSongDetail = async () => {
   try {
     const res = await songDetailApi(curId.value);
     console.log(res);
+    radioBGInfo.value = res.songs[0].al.picUrl;
   } catch (e) {
     console.log(e);
   }
@@ -129,7 +130,7 @@ const getRadio = async() => {
   try {
     const res = await radioApi()
     // console.log(res.playlist.coverImgUrl)
-    radioBGInfo.value = res.playlist.coverImgUrl
+    // radioBGInfo.value = res.playlist.coverImgUrl
   } catch (error) {
     console.log(error)
   }

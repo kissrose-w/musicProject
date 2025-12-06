@@ -1,6 +1,6 @@
 
 import axios from "axios"
-import type { HotSearchResponse, SearchSuggestResponse, SearchListResponse, PLDetail, officialChart } from './type'
+import type { HotSearchResponse, SearchSuggestResponse, SearchListResponse, PLDetail, officialChart, Song, SongDeatil } from './type'
 import request from "./request";
 
 
@@ -85,7 +85,7 @@ export const radioUrlApi = (id:number | string) =>{
 
 // 获取音乐详情
 export const songDetailApi = (id: number | string) => {
-  return request({
+  return request<SongDeatil>({
     url: `/api/song/detail?ids=${id}`
   })
 }
