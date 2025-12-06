@@ -92,12 +92,6 @@ export const telLoginApi = (phone:string ,password:string) => {
   })
 }
 
-//获取cookie
-export const cookieApi = () => {
-  return request({
-    url:'/api/register/anonimous'
-  })
-}
 // 获取歌词
 export const radioLyricApi = (id:number | string) =>{
   return request({
@@ -111,3 +105,23 @@ export const playerCommentApi = (id:number | string) =>{
     url:`/api/comment/music?id=${id}`,
   })
 }
+
+//生成二维码key
+export const getKeyApi = () =>{
+  return request({
+    url:"/api/login/qr/key"
+  })
+}
+//获取二维码
+export const getQRCodeApi = (key:string,qrimg:string) =>{
+  return request({
+    url:`/api/login/qr/create?key=${key}&qrimg=${qrimg}`,
+  })
+}
+
+//扫码登录状态
+export const getStatusApi = (key:string) => {
+  return request({
+    url:`/api/login/qr/check?key=${key}`
+  })
+} 
