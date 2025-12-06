@@ -69,7 +69,7 @@ export const mineApi = ()=>{
     url:"/api/user/playlist?uid=9862787213"
   })
 }
-
+// 临时背景
 export const radioApi = () =>{
   return request({
     url:"/api/playlist/detail?id=757439549"
@@ -102,5 +102,11 @@ export const telLoginApi = (phone:string ,password:string) => {
 export const cookieApi = () => {
   return request({
     url:'/api//register/anonimous'
+  })
+}
+// 获取歌词
+export const radioLyricApi = (id:number | string) =>{
+  return request({
+    url:`https://music.zyxcl.xyz/lyric?id=${id}`,
   })
 }
