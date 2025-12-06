@@ -140,6 +140,7 @@ const getStatus = async () =>{
         </uni-forms-item>
       </uni-forms>
       <button @click="loginTo">登录</button>
+      <button>注册</button>
     </view>
     <p @click="QRlogin">二维码登录</p>
   </view>
