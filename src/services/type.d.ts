@@ -92,6 +92,12 @@ export type User = {
   avatarImgId_str: string;
 };
 
+// 单首歌曲响应类型
+export type SongDeatil = {
+  code: number;
+  songs: Song[];
+}
+
 // 歌曲类型
 export type Song = {
   id: number;
