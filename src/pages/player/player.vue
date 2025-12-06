@@ -6,7 +6,7 @@ import disk from './components/disk.vue'
 import bottomNav from './components/bottomNav.vue'
 import lyric from './components/lyric.vue'
 // import comment from '@/components/comment.vue'
-import Comment from '@/components/Comment.vue'
+import Comment from '@/components/comment.vue'
 const radioBGInfo = ref('')
 const radioUrl = ref("")
 const radiolyric = ref("")

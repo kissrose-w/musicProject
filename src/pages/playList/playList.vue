@@ -3,7 +3,7 @@ import { getCommentApi, getPLDetailApi } from '@/services';
 import { ref } from 'vue';
 import type { Playlist, Song } from '@/services/type';
 import SongList from '@/components/SongList.vue';
-import Comment from '@/components/Comment.vue';
+import Comment from '@/components/comment.vue';
 import { onLoad } from '@dcloudio/uni-app';
 
 
