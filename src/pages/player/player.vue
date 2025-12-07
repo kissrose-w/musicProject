@@ -132,9 +132,12 @@ const formatTime = (t:number) =>{
   if(!t){
     return "0:00"
   }
-  const minute = Math.floor( t/ 1000 / 60)
-  const second = Math.floor(t / 1000 % 60)
+  const minute = addZero(Math.floor( t/ 1000 / 60))
+  const second = addZero(Math.floor(t / 1000 % 60))
   return  `${minute}:${second}`
+}
+const addZero = (n:number) =>{
+  return n>= 10? n : "0" + n
 }
 // 播放自动显示进度
 const progressRate = () => {
@@ -142,36 +145,30 @@ const progressRate = () => {
   playwidth.value.style.width = `${rate}%`
   playball.value.style.left = `${rate}%`
 }
-// 进度条点击，？？？拖拽控制播放
-// interface event {
-//   currentTarget: object,
-//   clientX:number
-// }
+
 let playEl: HTMLElement | null = null
-const move = (e:MouseEvent) =>{
+const move = (e:MouseEvent | TouchEvent) =>{
   if (!playEl || !totalTime.value) return
-  // playbar.value = e.currentTarget as HTMLElement
+  const clientX = "touches" in e? e.touches[0].clientX : e.clientX
   const clientWidth = playEl.getBoundingClientRect()
-  const x = e.clientX - clientWidth.left
-  const percent = (x/clientWidth.width) * 100
+  const x = clientX - clientWidth.left
+  let percent = (x/clientWidth.width) * 100
+  percent = Math.max(0,Math.min(100,percent))
   playwidth.value.style.width = `${percent}%`
   playball.value.style.left = `${percent}%`
   curTime.value = Math.floor(totalTime.value * percent / 100)
   player.seek(curTime.value / 1000)
 }
 //点击进度条
-const mousedown = (e:MouseEvent) => {
+const mousedown = (e:TouchEvent) => {
   isMove = true
   // console.log("isMove状态1:", isMove)
   playEl = e.currentTarget as HTMLElement
   move(e)
 }
-const mousemove = (e:MouseEvent) => {
-  isMove = true
-  // console.log("111")
-  // console.log("isMove状态2:", isMove) 
+const mousemove = (e:TouchEvent) => {
+  isMove = true 
   if(isMove){
-    // console.log("222")
     move(e)
   }
 }
@@ -226,10 +223,10 @@ const getPlayerComment = async() =>{
       <span>{{ formatTime(curTime) }}</span>
       <div class="playBar"
       ref="playbar"
-      @mousedown = "mousedown"
-      @mousemove.prevent="mousemove"
-      @mouseup="mouseup"
-      @mouseleave="mouseup"
+      @touchstart = "mousedown"
+      @touchmove.prevent="mousemove"
+      @touchend="mouseup"
+      @touchcancel="mouseup"
       >
           <div class="playBall" ref="playball"></div>
           <div class="playWidth" ref="playwidth"></div>

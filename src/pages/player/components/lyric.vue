@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, nextTick } from "vue"
+import { computed, onMounted, ref, watch } from "vue"
 const props = defineProps(["radiolyric","curTime","showLyric","player"])
 const emits = defineEmits(["changeTime"])
 const lines = ref([])
@@ -42,7 +42,7 @@ const getCurLine = computed(() => {
   })
   return curLineI
 })
-
+// 获取循环渲染的ref
 const setCur = (el: any, index: number) => {
   if (el) {
     currentLine.value[index] = el
@@ -58,7 +58,6 @@ onMounted(() => {
 })
 watch([() => newTime.value,() => props.curTime], ()=>{
 //  console.log(getCurLine.value)
-  
   if(newTime.value){
     props.player.seek(newTime.value/1000)
     newTime.value = 0
@@ -115,6 +114,9 @@ v-for="(item, index) in line"
     &.active{
     color:#ffffff;
     transform: scale(1.3);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
   }
 }

@@ -7,7 +7,7 @@ import request from "./request";
 //主页接口
 export const homepageApi = () =>{
   return request({
-    url:"/api/homepage/block/page"
+    url:"https://music.zyxcl.xyz/homepage/block/page"
   })}
 
 // 搜索接口
