@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, nextTick } from "vue"
+import { computed, onMounted, ref, watch } from "vue"
 const props = defineProps(["radiolyric","curTime","showLyric","player"])
-const emits = defineEmits(["changeChange"])
+const emits = defineEmits(["changeTime"])
 const lines = ref([])
 const line = ref([])
-const newTime = ref(null)
+const newTime = ref(0)
 const container = ref(null)
 const currentLine = ref<Record<number, any>>({})
 const curIndex = ref(null)
@@ -42,8 +42,7 @@ const getCurLine = computed(() => {
   })
   return curLineI
 })
-
-
+// 获取循环渲染的ref
 const setCur = (el: any, index: number) => {
   if (el) {
     currentLine.value[index] = el
@@ -57,12 +56,11 @@ onMounted(() => {
     scrollTo(getCurLine.value)
   // })
 })
-watch(() => props.curTime, ()=>{
+watch([() => newTime.value,() => props.curTime], ()=>{
 //  console.log(getCurLine.value)
-  
   if(newTime.value){
     props.player.seek(newTime.value/1000)
-    newTime.value = null
+    newTime.value = 0
     return
   }
   scrollTo(getCurLine.value)
@@ -81,9 +79,9 @@ const scrollTo = (i:number) => {
   })
   if(i !==getCurLine.value ){
     newTime.value = line.value[i].time
+    emits("changeTime", newTime.value)
   } 
 }
-
 
 </script>
 
@@ -96,7 +94,6 @@ v-for="(item, index) in line"
 :class="{active : curIndex === index}"
 @click.stop="scrollTo(index)"
 >{{ item.text }}</view>
-{{ props.curTime }}
 </view>
 </template>
 
@@ -109,13 +106,17 @@ v-for="(item, index) in line"
   // padding:40rpx;
   text-align: center;
   margin-bottom: 140rpx;
+  scrollbar-width: none;
   .eachLine{
     line-height: 60rpx;
     width:80%;
-    margin-left: 60rpx;
+    margin-left: 70rpx;
     &.active{
     color:#ffffff;
     transform: scale(1.3);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
   }
 }
