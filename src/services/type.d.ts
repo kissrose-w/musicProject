@@ -201,3 +201,16 @@ export type officialChart = {
   code:number,
   list:[]
 }
+
+// 扫码登录后本人信息
+type UserInfo = {
+  code: number;
+  profile: Profile;
+}
+
+type Profile = {
+  userId: number;
+  nickname: string;
+  avatarUrl: string;
+  backgroundUrl:string;
+}

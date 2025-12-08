@@ -17,18 +17,12 @@ const router = useRouter();
 const userStore = useUserStore();
 
 
-const loginStatus = async () => {
-  try {
-    const res = await loginStatusApi();
-    console.log(res);
-    if(res.data.code !== 200){
-      router.replace('/pages/login/login')
-    }
-  } catch (e) {
-    console.log(e)
+const getLoginStatus = async () => {
+  if(userStore.userInfo.code !== 200){
+    router.replace('/pages/login/login')
   }
 }
-loginStatus();
+getLoginStatus();
 
 const getMine = async() => {
   try {
