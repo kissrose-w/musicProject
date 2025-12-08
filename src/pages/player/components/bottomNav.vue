@@ -15,6 +15,7 @@
 <script setup lang="ts">
 const props = defineProps(["isPlay"])
 const emits = defineEmits(["ifPlay"])
+
 </script>
 
 <style lang="scss" scoped>

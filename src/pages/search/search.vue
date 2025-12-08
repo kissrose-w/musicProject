@@ -36,9 +36,12 @@ const goPlay = (id?: number) => {
     router.push({ path: '/pages/player/player' })
     return
   }
-  router.push({
-    path: '/pages/player/player',
-    query: { id: String(id) }
+  // router.push({
+  //   path: '/pages/player/player',
+  //   query: { id: String(id) }
+  // })
+  uni.navigateTo({
+    url:`/pages/player/player?id=${id}`
   })
 }
 

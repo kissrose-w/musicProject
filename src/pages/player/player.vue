@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onLoad,onUnload,onHide,onShow} from '@dcloudio/uni-app'
-import { ref, watch,computed} from 'vue'
+import { onLoad,onUnload} from '@dcloudio/uni-app'
+import { ref, watch,computed, nextTick} from 'vue'
 import { radioUrlApi,radioLyricApi, songDetailApi, playerCommentApi} from "../../services/index"
 import disk from './components/disk.vue'
 import bottomNav from './components/bottomNav.vue'
@@ -10,7 +10,7 @@ const radioBGInfo = ref('')
 const radioUrl = ref("")
 const radiolyric = ref("")
 const playInfo = ref<{time?:number}>({})
-const totalTime = ref(null)
+const totalTime = ref(0)
 const curTime = ref(0)
 const player = uni.createInnerAudioContext()
 const isPlay = ref(true)
@@ -18,7 +18,7 @@ const timer = ref(null)
 const playwidth = ref(null)
 const playball = ref(null)
 const playbar = ref(null)
-const isMove = ref(false)
+let isMove = false
 const showLyric = ref(false)
 const showRemark = ref(false)
 const commentList = ref([])
@@ -29,7 +29,36 @@ interface Params {
   // id: number
   id?: string | number
 }
-// 监听id变化
+// 歌曲url
+const getRadioUrl = async() => {
+  try {
+    const res = await radioUrlApi(curId.value)
+    radioUrl.value = res.data[0].url
+    playInfo.value = res.data[0]
+    totalTime.value = playInfo.value.time
+  } catch (error) {
+    console.log(error)
+  }
+}
+// 获取歌曲详情（背景）
+const getSongDetail = async () => {
+  try {
+    const res = await songDetailApi(curId.value)
+    radioBGInfo.value = res.songs[0].al.picUrl
+  } catch (e) {
+    console.log(e);
+  }
+}
+// 歌词
+const radioLyric = async() => {
+  try {
+    const res = await radioLyricApi(curId.value)
+    radiolyric.value = res.lrc.lyric.split('\n')
+  } catch (error) {
+    console.log(error) 
+  }
+}
+// 监听id变化切换歌曲
 watch(curId, async (newId) => {
   if (newId) {
     player.stop()
@@ -44,172 +73,135 @@ watch(curId, async (newId) => {
 { 
   immediate: false 
 })
-onLoad((query?: Params) => {
-  console.log(query?.id) //打印出上个页面传递的参数
+onLoad(async(query?: Params) => {
   curId.value = query?.id!
-  getRadioUrl()
-  getSongDetail()
   isPlay.value = true
-  clearInterval(timer.value)
   curTime.value = 0
-  getRadioUrl()
-  radioLyric()
-  getPlayerComment()
-  timer.value = setInterval(() => {
-    if (isPlay.value && curTime.value < totalTime.value) {
-      curTime.value += 1000
-      progressRate()
-    }else if(curTime.value >= totalTime.value){
-       clearInterval(timer.value)
-      }
-  }, 1000)
-  // console.log(curTime.value)
+  await Promise.all([
+    getSongDetail(), 
+    getRadioUrl(), 
+    radioLyric(),
+    getPlayerComment()
+  ])
+  startTimer()
+  nextTick(()=>{
+    progressRate()
+  })
 })
+const startTimer = () => {
+  if (timer.value) clearInterval(timer.value)
+  timer.value = setInterval(() => {
+  if (isPlay.value && curTime.value < totalTime.value) {
+    curTime.value += 1000
+    progressRate()
+  }else{
+    isPlay.value = false
+    player.pause()
+    clearInterval(timer.value)
+    timer.value = null
+    curTime.value = 0 
+    progressRate()
+    }
+  }, 1000)
+}
 onUnload(() => {
   if(player){
     player.stop()
     player.destroy()
     clearInterval(timer.value)
+    timer.value = null
     isPlay.value = false
   }
 })
-// onHide(() => {
-//   if (isPlay.value) {
-//     player.pause()
-//     isPlay.value = false
-//   }
-// })
-// onShow(() => {
-//   if (radioUrl.value && !isPlay.value) {
-//     player.src = radioUrl.value
-//     player.play()
-//   }
-// })
-// 歌曲url
-const getRadioUrl = async() => {
-  try {
-    const res = await radioUrlApi(curId.value)
-    // console.log(res.data[0].url)
-    // console.log(res.data[0])
-    radioUrl.value = res.data[0].url
-    playInfo.value = res.data[0]
-    totalTime.value = playInfo.value.time
-  } catch (error) {
-    console.log(error)
-  }
-}
-// 获取歌曲详情
-const getSongDetail = async () => {
-  try {
-    const res = await songDetailApi(curId.value);
-    console.log(res);
-    radioBGInfo.value = res.songs[0].al.picUrl;
-  } catch (e) {
-    console.log(e);
-  }
-}
-// 歌词
-const radioLyric = async() => {
-  try {
-    const res = await radioLyricApi(curId.value)
-    console.log(res);
-    radiolyric.value = res.lrc.lyric.split('\n')
-  } catch (error) {
-    console.log(error) 
-  }
-}
+// 播放开关 
 const ifPlay = () => {
   isPlay.value = !isPlay.value
   if(isPlay.value){
-    player.src = radioUrl.value
+    if(!player.src){
+      player.src = radioUrl.value
+    }
     player.play()
-    console.log("播放")
+    startTimer()
   }else{
     player.pause()
-    console.log("停止")
+    clearInterval(timer.value)
   }
 }
-
+// 格式化时间
 const formatTime = (t:number) =>{
-  // console.log(playInfo.value.time)
   if(!t){
     return "0:00"
   }
-  const minute = Math.floor( t/ 1000 / 60)
-  const second = Math.floor(t / 1000 % 60)
-  // console.log(`${minute}:${second}`) 
+  const minute = addZero(Math.floor( t/ 1000 / 60))
+  const second = addZero(Math.floor(t / 1000 % 60))
   return  `${minute}:${second}`
+}
+const addZero = (n:number) =>{
+  return n>= 10? n : "0" + n
 }
 // 播放自动显示进度
 const progressRate = () => {
   const rate = (curTime.value / totalTime.value)*100
-  // console.log(rate +"%")
-  // console.log(playwidth.value)
   playwidth.value.style.width = `${rate}%`
   playball.value.style.left = `${rate}%`
 }
-interface event {
-  currentTarget: object,
-  clientX:number
-}
-const move = (n:event) =>{
-  const e = n
-  playbar.value = e.currentTarget as HTMLElement
-  const clientWidth = playbar.value.getBoundingClientRect()
-  const x = e.clientX - clientWidth.left
-  const percent = (x/clientWidth.width) * 100
+
+let playEl: HTMLElement | null = null
+const move = (e:MouseEvent | TouchEvent) =>{
+  if (!playEl || !totalTime.value) return
+  const clientX = "touches" in e? e.touches[0].clientX : e.clientX
+  const clientWidth = playEl.getBoundingClientRect()
+  const x = clientX - clientWidth.left
+  let percent = (x/clientWidth.width) * 100
+  percent = Math.max(0,Math.min(100,percent))
   playwidth.value.style.width = `${percent}%`
   playball.value.style.left = `${percent}%`
   curTime.value = Math.floor(totalTime.value * percent / 100)
   player.seek(curTime.value / 1000)
 }
-// 点击进度条
-const mousedown = (e:MouseEvent) => {
-  isMove.value = true
-  console.log("isMove状态1:", isMove.value)
-  console.log(e)
+//点击进度条
+const mousedown = (e:TouchEvent) => {
+  isMove = true
+  // console.log("isMove状态1:", isMove)
+  playEl = e.currentTarget as HTMLElement
   move(e)
 }
-const mousemove = (e:MouseEvent) => {
-  console.log("111")
-  console.log("isMove状态2:", isMove.value)
-  e.preventDefault() 
-  if(isMove.value){
-    console.log("222")
+const mousemove = (e:TouchEvent) => {
+  isMove = true 
+  if(isMove){
     move(e)
   }
 }
 const mouseup = () => {
-  isMove.value = false
-}
-const mouseleave = () => {
-  isMove.value = false
+  isMove = false
+  playEl = null
 }
 // 歌词关闭
 const changeshow = () =>{
   showLyric.value = false
+}
+// 用点击时间赋值当前时间
+const changeTime = (newT:number) => {
+  curTime.value = newT
 }
 // 获取播放页面评论
 const getPlayerComment = async() =>{
   try {
     console.log(curId.value)
     const res = await playerCommentApi(curId.value)
-    console.log(res.comments)
-    console.log(res.hotComments)
     commentList.value = res.comments
     hotComments.value = res.hotComments
   } catch (error) {
     console.log(error)
   }
 }
-
 </script>
 
 <template>
  <view class="radio" :style="{ backgroundImage: `url(${radioBGInfo})` }" @click="showRemark = false">
     <view class="mianPlay">
       <view class="diskBox" @click="showLyric = true" v-if="showLyric === false"><disk :bg="radioBGInfo" :isPlay="isPlay" ></disk></view>
-      <view class="lyricBox"><lyric v-if="showLyric" :radiolyric="radiolyric" :curTime="curTime" @changeShow="changeshow" :showLyric="showLyric" :player="player"></lyric></view>
+      <view class="lyricBox"><lyric v-if="showLyric" :radiolyric="radiolyric" :curTime="curTime" @changeShow="changeshow" :showLyric="showLyric" :player="player" @changeTime="changeTime"></lyric></view>
     </view>
     <view class="playArea">
       <view class="like-remark">
@@ -225,17 +217,16 @@ const getPlayerComment = async() =>{
           >
           </Comment>
         </view>
-        
       </view>
     <view>
     <view class="playInfo">
       <span>{{ formatTime(curTime) }}</span>
       <div class="playBar"
       ref="playbar"
-      @mousedown = "mousedown"
-      @mousemove = "mousemove"
-      @mouseup = "mouseup"
-      @mouseleave = "mouseleave"
+      @touchstart = "mousedown"
+      @touchmove.prevent="mousemove"
+      @touchend="mouseup"
+      @touchcancel="mouseup"
       >
           <div class="playBall" ref="playball"></div>
           <div class="playWidth" ref="playwidth"></div>
@@ -275,9 +266,6 @@ body,html{
   position: relative;
   z-index: 100;
 }
-// :deep(disk) {
-//   z-index: 150; 
-// }
 .playArea{
   position: absolute;
   left: 0;
@@ -297,6 +285,8 @@ body,html{
     border-radius: 2rpx;
     margin: 0 16rpx;
     position: relative;
+    cursor: pointer; // 鼠标样式改为指针，确保可点击
+    user-select: none;
   }
   .playBall{
     width:20rpx;
