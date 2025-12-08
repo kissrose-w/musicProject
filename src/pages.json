@@ -22,6 +22,12 @@
         "navigationBarTitleText": "登录" 
 			}
 		},
+		{
+			"path": "pages/dynamic/dynamic",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
 		
 		{
 			"path": "pages/mine/mine",
@@ -70,7 +76,14 @@
 			"selectedIconPath":"./static/faxian_1.png",
       "pagePath": "pages/index/index",
       "text": "发现"
-    },{
+    },
+		{
+			"iconPath":"./static/dynamic.svg",
+			"selectedIconPath":"./static/dynamic_1.svg",
+      "pagePath": "pages/dynamic/dynamic",
+      "text": "动态"
+    },
+		{
 			"iconPath":"./static/wode.png",
 			"selectedIconPath":"./static/wode_1.png",
       "pagePath": "pages/mine/mine",

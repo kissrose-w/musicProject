@@ -4,10 +4,41 @@ import type { HotSearchResponse, SearchSuggestResponse, SearchListResponse, PLDe
 import request from "./request";
 
 
+
+
+
+
+//生成二维码key
+export const getKeyApi = () =>{
+  return request({
+    url:`/api/login/qr/key?_t=${Date.now()}`
+  })
+}
+//获取二维码
+export const getQRCodeApi = (key:string,qrimg:string) =>{
+  return request({
+    url:`/api/login/qr/create?key=${key}&qrimg=${qrimg}&_t=${Date.now()}`,
+  })
+}
+
+//扫码登录状态
+export const getStatusApi = (key:string) => {
+  return request({
+    url:`/api/login/qr/check?key=${key}&_t=${Date.now()}`
+  })
+} 
+
+// 获取登录状态
+export const loginStatusApi = () => {
+  return request({
+    url: '/api/login/status'
+  })
+}
+
 //主页接口
 export const homepageApi = () =>{
   return request({
-    url:"/api/homepage/block/page"
+    url:"https://music.zyxcl.xyz/homepage/block/page"
   })}
 
 // 搜索接口
@@ -105,23 +136,3 @@ export const playerCommentApi = (id:number | string) =>{
     url:`/api/comment/music?id=${id}`,
   })
 }
-
-//生成二维码key
-export const getKeyApi = () =>{
-  return request({
-    url:"/api/login/qr/key"
-  })
-}
-//获取二维码
-export const getQRCodeApi = (key:string,qrimg:string) =>{
-  return request({
-    url:`/api/login/qr/create?key=${key}&qrimg=${qrimg}`,
-  })
-}
-
-//扫码登录状态
-export const getStatusApi = (key:string) => {
-  return request({
-    url:`/api/login/qr/check?key=${key}`
-  })
-} 

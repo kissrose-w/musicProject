@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-import { mineApi } from "../../services/index"
+import { loginStatusApi, mineApi } from "../../services/index"
+import { useRouter } from 'vue-router'
 import { ref } from "vue"
+import { useUserStore } from "@/store/user"
 
 interface MineInfo {
   id: number;
@@ -11,6 +13,23 @@ interface MineInfo {
 }
 
 const mineInfo = ref<MineInfo>()
+const router = useRouter();
+const userStore = useUserStore();
+
+
+const loginStatus = async () => {
+  try {
+    const res = await loginStatusApi();
+    console.log(res);
+    if(res.data.code !== 200){
+      router.replace('/pages/login/login')
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+loginStatus();
+
 const getMine = async() => {
   try {
     const res = await mineApi()
