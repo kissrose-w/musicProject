@@ -10,10 +10,6 @@ interface MineInfo {
   subscribedCount: number;
 }
 
-<<<<<<< HEAD
-=======
-const show = ref<boolean>(false)
->>>>>>> mlh
 const mineInfo = ref<MineInfo>()
 const getMine = async() => {
   try {
@@ -35,7 +31,6 @@ const toMyLike = (e:any) => {
 </script>
 
 <template>
-  <view v-if="show" class="con">
     <view class="basicInfo">
       <view class="avatar">
         <img src="https://p1.music.126.net/q7pUyLVm3g6uL2QQeMvSgg==/109951168645624240.jpg" alt="">
@@ -55,17 +50,12 @@ const toMyLike = (e:any) => {
       </view>
     </view>
   </view>
-<<<<<<< HEAD
   <view class="myLike" :data-id="mineInfo?.id" @click="toMyLike">
     <img :src="mineInfo?.coverImgUrl" alt="">
     <view class="likeInfo">
       <text>{{ mineInfo?.name }}</text>
       <view class="count">{{mineInfo?.playCount}}首·{{mineInfo?.subscribedCount}}次播放</view>
     </view>
-  </view>
-=======
-  <button v-if="!show" @click="show = true">去登陆</button>
->>>>>>> mlh
 </template>
 
 <style lang="scss" scoped>
