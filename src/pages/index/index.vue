@@ -31,7 +31,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import Head from './components/head/Head.vue';
+// import Head from './components/head/Head.vue';
+import Head from '@/components/Head.vue';
 // import { homepageApi } from '@/services';
 import { homepageApi } from '../../services';
 import NavSwiper from './components/navSwiper/NavSwiper.vue';

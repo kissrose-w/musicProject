@@ -4,7 +4,8 @@
       <uni-icons type="bars" :size="30"  ></uni-icons>
     </view>
     <uni-drawer class="dialog" ref="showLeft" mode="left" :mask-click="true" :width="300">
-      <view class="dialog-header">
+      <view class="wrap">
+        <view class="dialog-header">
           <view class="userMsg" @click="goMine">
             <image src="https://p1.music.126.net/q7pUyLVm3g6uL2QQeMvSgg==/109951168645624240.jpg"/>
             <p>hhhh</p>
@@ -14,17 +15,19 @@
             <svg t="1764900103404" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6936" width="20" height="20"><path d="M928 544 96 544c-17.664 0-32-14.336-32-32s14.336-32 32-32l832 0c17.696 0 32 14.336 32 32S945.696 544 928 544zM832 928l-192 0c-17.696 0-32-14.304-32-32s14.304-32 32-32l192 0c17.664 0 32-14.336 32-32l0-160c0-17.696 14.304-32 32-32s32 14.304 32 32l0 160C928 884.928 884.928 928 832 928zM352 928 192 928c-52.928 0-96-43.072-96-96l0-160c0-17.696 14.336-32 32-32s32 14.304 32 32l0 160c0 17.664 14.368 32 32 32l160 0c17.664 0 32 14.304 32 32S369.664 928 352 928zM128 384c-17.664 0-32-14.336-32-32L96 192c0-52.928 43.072-96 96-96l160 0c17.664 0 32 14.336 32 32s-14.336 32-32 32L192 160C174.368 160 160 174.368 160 192l0 160C160 369.664 145.664 384 128 384zM896 384c-17.696 0-32-14.336-32-32L864 192c0-17.632-14.336-32-32-32l-192 0c-17.696 0-32-14.336-32-32s14.304-32 32-32l192 0c52.928 0 96 43.072 96 96l0 160C928 369.664 913.696 384 896 384z" fill="#272636" p-id="6937"></path></svg>
           </view>
         </view>
-      <scroll-view class="dialog-con" style="height: 100%;" scroll-y="true" >
-        <view class="con">
-          <view class="list" v-for="item in list" :key="item.name">
-            <view >{{ item.name }}</view>
+        <scroll-view class="dialog-con" style="height: 100%;" scroll-y="true" >
+          <view class="con">
+            <view class="list" v-for="item in list" :key="item.name">
+              <view >{{ item.name }}</view>
+            </view>
           </view>
+        </scroll-view>
+        <view class="footer">
+            <p>设置</p>
+            <p>更多</p>
         </view>
-      </scroll-view>
-      <view class="footer">
-          <p>设置</p>
-          <p>更多</p>
-        </view>
+      </view>
+      
     </uni-drawer>
     <view class="inp">
       <uni-icons type="search" size="20" color="gray"></uni-icons>
@@ -97,7 +100,7 @@ const goMine = () =>{
   display: flex;
   align-items: center;
   height: 70px;
-  border-bottom: 1px solid #eee;
+  // border-bottom: 1px solid #eee;
 }
 
 .menu-btn{
@@ -121,6 +124,13 @@ const goMine = () =>{
 .dialog{
   display: flex;
   width: 100%;
+  height: 100vh;
+  // padding: 20rpx;
+  .wrap{
+    height: 100%;
+    background: #F3F7FA;
+    padding: 40rpx;
+  }
 }
 .dialog-header{
   width: 100%;
@@ -130,6 +140,8 @@ const goMine = () =>{
   align-items: center;
   padding: 20rpx 15rpx;
   border-bottom: 1px solid #eee;
+  font-family: "楷体";
+  // background: #fff;
   .userMsg{
     display: flex;
     align-items: center;
@@ -146,34 +158,53 @@ const goMine = () =>{
 }
 .con{
   flex: 1;
+  background: #fff;
+  border-radius: 15rpx;
+  height: 1020rpx;
+  padding: 10rpx 20rpx;
+  overflow: auto;
+  &::-webkit-scrollbar{
+    display: none;
+  }
   .list{
-    height: 50px;
+    height: 55px;
     margin: 0 10px;
-    line-height: 50px;
-    border-bottom: 1px solid #eee;
+    line-height: 55px;
+    // border-bottom: 1px solid #eee;
     >view{
       font-size: 15px;
       font-family: "楷体";
+    }
+    &:nth-child(4){
+      border-bottom: 1px solid #ddd;
+    }
+    &:nth-child(6){
+      border-bottom: 1px solid #ddd;
     }
   }
 }
 .footer{
   position: fixed;
-  bottom: 0;
+  bottom: 10rpx;
   left: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 15px;
+  padding: 0 40rpx;
   width: 600rpx;
   height: 60px;
+  font-size: 14px;
   >p{
     border: 1px solid #eee;
-    border-radius: 10px;
+    border-radius: 10rpx;
     width: 100%;
-    margin-right: 5px;
+    // margin-right: 5px;
     text-align: center;
-    padding: 15px;
+    padding: 15rpx;
+    background: #fff;
+    &:first-child{
+      margin-right: 40rpx;
+    }
   }
 }
 

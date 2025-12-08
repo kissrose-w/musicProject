@@ -13,6 +13,7 @@ export default defineConfig({
       '/api': {
         // http://10.55.6.70:5001/
         // https://music.zyxcl.xyz
+        // http://39.96.210.90:5001
         target: 'http://39.96.210.90:5001',
         changeOrigin: true,
         secure: false,
