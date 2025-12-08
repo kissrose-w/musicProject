@@ -120,6 +120,13 @@ const getStatus = async () =>{
   }
 }
 
+// 跳转注册页面
+const goRegister = () => {
+  uni.navigateTo({
+    url: '/pages/register/register'
+  })
+}
+
 
 
 </script>
@@ -135,7 +142,7 @@ const getStatus = async () =>{
           <uni-easyinput type="password" v-model="formData.password" placeholder="请输入密码" />
       </uni-forms>
       <button @click="loginTo">登录</button>
-      <button>注册</button>
+      <button @click="goRegister">注册</button>
     </view>
     <p @click="QRlogin">二维码登录</p>
   </view>
@@ -217,5 +224,10 @@ const getStatus = async () =>{
   }
 
 }
-
+button {
+  color: #fff;
+  margin-top: 10px;
+  height: 40px;
+  line-height: 40px;
+}
 </style>
